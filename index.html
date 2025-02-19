@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Word Modifier</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; }
+    textarea, input { width: 100%; padding: 10px; margin: 10px 0; }
+    button { padding: 10px 20px; cursor: pointer; background-color: #ff5722; color: white; border: none; }
+    #result { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; }
+    #copyButton { margin-top: 10px; background-color: #008CBA; }
+  </style>
+</head>
+<body>
+  <h2>Smart Word Modifier</h2>
+  <label for="description">Enter Description:</label>
+  <textarea id="description" rows="4" placeholder="Enter the description here..."></textarea>
+  
+  <button onclick="filterWords()">Modify Text</button>
+  <button id="copyButton" onclick="copyText()">Copy</button>
+  
+  <h3>Modified Description:</h3>
+  <div id="result"></div>
+  
+  <script>
+    // शब्दों में बदलाव करने के लिए मैपिंग
+    const wordModifications = {
+        "desi": "desii","pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", "mature": "maturee",
+        "aunty": "auntee", "romance": "romaance", "love": "loove", "affair": "affaair",
+        "dating": "daating", "night": "niight", "kiss": "kiiss", "nude": "nuude",
+        "erotic": "erootic", "adult": "adults", "bold": "boold", "passion": "passioon",
+        "lust": "luust", "intimate": "intimaate", "flirt": "fliirt", "bedroom": "bedrooom",
+        "sensual": "sensuall", "playboy": "playbooy", "telegram": "teelegram", "premium": "preemium",
+        "onlyfans": "onlyfaans", "mod": "mood", "hacked": "haacked", "cracked": "craacked",
+        "casino": "casinno", "betting": "bettiing", "porn": "porrn", "xxx": "xxX",
+        "free fire": "free fiire", "hacker": "haacker", "cheat": "cheeat", "dark web": "daark web",
+        "bitcoin": "bitcoiin", "drug": "druug", "scam": "scaam", "deepfake": "deepfaake",
+        "illegal": "illegaal", "fake id": "faake ID", "hijack": "hijaack", "spyware": "spywaare",
+        "fraud": "frauud", "carding": "cardiing", "phishing": "phishiing", "hacking": "haacking",
+        "cybercrime": "cybercriime", "extortion": "extortiion", "blackmail": "blaackmail",
+        "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive",
+        "mirzapur": "mirzapuur","sacred games": "sacreed games",
+  "family man": "famiy man",
+  "patal lok": "pataal lok",
+  "asur": "asurr",
+  "scam 1992": "scaam 1992",
+  "game of thrones": "game of thrones",
+  "money heist": "money heeist",
+  "breaking bad": "breaking baad",
+  "stranger things": "stranger thingz",
+  "lucifer": "luciifer",
+  "squid game": "squid gaame",
+  "avengers": "avengerrs",
+  "joker": "jooker",
+  "titanic": "titannic",
+  "inception": "inceptioon",
+  "fast and furious": "fast and furius",
+  "deadpool": "deadpoool",
+  "the boys": "the boiys",
+  "the witcher": "the witcheer",
+  "peaky blinders": "peaky blinderrs",
+
+  "seks": "seeks",
+  "porno": "porrno",
+  "mesum": "mesuum",
+  "telanjang": "telanjaang",
+  "bugil": "bugiil",
+  "janda panas": "jandaa panaas",
+  "bokep": "bokeep",
+  "VCS": "V C S",
+  "ngentot": "ngenttot",
+  "esek-esek": "esek-esekk"
+
+    };
+
+    function filterWords() {
+        let description = document.getElementById("description").value;
+
+        Object.keys(wordModifications).forEach(word => {
+            let regex = new RegExp("\\b" + word + "\\b", "gi");
+            description = description.replace(regex, wordModifications[word]);
+        });
+
+        document.getElementById("result").innerText = description.trim();
+    }
+    
+    function copyText() {
+        let text = document.getElementById("result").innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Copied to clipboard!");
+        }).catch(err => {
+            console.error("Failed to copy: ", err);
+        });
+    }
+  </script>
+</body>
+</html>
