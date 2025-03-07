@@ -8,7 +8,7 @@
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; }
     textarea, input { width: 100%; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
     button { padding: 10px 20px; cursor: pointer; background-color: #ff5722; color: white; border: none; }
-    #result { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; }
+    #result { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; }
     #copyButton { margin-top: 10px; background-color: #008CBA; }
   </style>
 </head>
@@ -25,7 +25,7 @@
   
   <script>
     const wordModifications = { 
-        "desi": "desii", "pornhub": "pornhab", "hot": "hoot", "sexy": "seexy", 
+        "desi": "desii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", 
         "aunty": "auntee", "romance": "romaance", "love": "loove",
         "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai",
         "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
@@ -36,43 +36,45 @@
 
     function modifySentences() {
         let inputText = document.getElementById("wordList").value.trim();
-        
         if (!inputText) {
             alert("Please enter some text!");
             return;
         }
         
         let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "");
-
+        
         let modifiedSentences = sentences.map(sentence => {
             let words = sentence.split(" ");
             let modifiedWords = words.map(word => {
                 let cleanWord = word.toLowerCase();
                 return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
             });
-            return modifiedWords.join(" ") + " rsa yetar";
+            return modifiedWords.join(" ");
         });
 
-        let finalOutput = `[
-  "${modifiedSentences.join('",\n  "')}"
-]`;
-        
-        document.getElementById("result").innerText = finalOutput;
+        let groupedOutput = {};
+        modifiedSentences.forEach((sentence, index) => {
+            let groupNumber = Math.floor(index / 10) + 1;
+            if (!groupedOutput[groupNumber]) {
+                groupedOutput[groupNumber] = [];
+            }
+            groupedOutput[groupNumber].push(sentence);
+        });
+
+        let formattedOutput = JSON.stringify(groupedOutput, null, 2);
+        document.getElementById("result").innerText = formattedOutput;
     }
 
     function copyText() {
         let text = document.getElementById("result").innerText;
-        
         if (!text) {
-            alert("No text to copy!");
+            alert("Nothing to copy!");
             return;
         }
-        
         navigator.clipboard.writeText(text).then(() => {
             alert("Copied to clipboard!");
         }).catch(err => {
             console.error("Failed to copy: ", err);
-            alert("Failed to copy!");
         });
     }
   </script>
