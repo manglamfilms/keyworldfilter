@@ -6,7 +6,7 @@
   <title>Smart Word Modifier</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; }
-    textarea, input { width: 100%; padding: 10px; margin: 10px 0; }
+    textarea, input { width: 100%; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
     button { padding: 10px 20px; cursor: pointer; background-color: #ff5722; color: white; border: none; }
     #result { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; }
     #copyButton { margin-top: 10px; background-color: #008CBA; }
@@ -14,104 +14,48 @@
 </head>
 <body>
   <h2>Smart Word Modifier</h2>
-  <label for="description">Enter Description:</label>
-  <textarea id="description" rows="4" placeholder="Enter the description here..."></textarea>
+  <label for="wordList">Enter Text (Each line as a separate sentence):</label>
+  <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
   
-  <button onclick="filterWords()">Modify Text</button>
+  <button onclick="modifySentences()">Modify Text</button>
   <button id="copyButton" onclick="copyText()">Copy</button>
   
-  <h3>Modified Description:</h3>
+  <h3>Modified Output:</h3>
   <div id="result"></div>
   
   <script>
     const wordModifications = {
-       "desi": "desii","pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", "mature": "maturee",
+        "hot": "hoot", "sexy": "seexy", "desi": "desii", "pornhub": "pornhab",
         "aunty": "auntee", "romance": "romaance", "love": "loove", "affair": "affaair",
         "dating": "daating", "night": "niight", "kiss": "kiiss", "nude": "nuude",
         "erotic": "erootic", "adult": "adults", "bold": "boold", "passion": "passioon",
-        "lust": "luust", "intimate": "intimaate", "flirt": "fliirt", "bedroom": "bedrooom",
-        "sensual": "sensuall", "playboy": "playbooy", "telegram": "teelegram", "premium": "preemium", "naked": "nakd", "horny": "horni",
-        "onlyfans": "onlyfaans", "mod": "mood", "hacked": "haacked", "cracked": "craacked",
-        "casino": "casinno", "betting": "bettiing", "porn": "porrn", "xxx": "xxX",
-        "free fire": "free fiire", "hacker": "haacker", "cheat": "cheeat", "dark web": "daark web", "porno": "prono",
-        "bitcoin": "bitcoiin", "drug": "druug", "scam": "scaam", "deepfake": "deepfaake",
-        "illegal": "illegaal", "fake id": "faake ID", "hijack": "hijaack", "spyware": "spywaare",
-        "fraud": "frauud", "carding": "cardiing", "phishing": "phishiing", "hacking": "haacking",
-        "cybercrime": "cybercriime", "extortion": "extortiion", "blackmail": "blaackmail",
-        "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive",
-        "mirzapur": "mirzapuur","sacred games": "sacreed games","leaked": "leakedd","lingerie": "lingeri","japanese": "japani","girls": "ladki girl",
-  "family man": "famiy man","ass": "asas","amateur": "amateurs","fucking": "fucka","fuck": "fuckingg","call": "coll","xnxx": "xnx","amazon prime": "amazon prime",
-  "patal lok": "pataal lok","sex": "sexi","sexx": "saxi",
-  "asur": "asurr",
-  "scam 1992": "scaam 1992",
-  "game of thrones": "game of thrones",
-  "money heist": "money heeist",
-  "breaking bad": "breaking baad",
-  "stranger things": "stranger thingz",
-  "lucifer": "luciifer",
-  "squid game": "squid gaame",
-  "avengers": "avengerrs",
-  "joker": "jooker",
-  "titanic": "titannic",
-  "inception": "inceptioon",
-  "fast and furious": "fast and furius",
-  "deadpool": "deadpoool",
-  "the boys": "the boiys",
-  "the witcher": "the witcheer",
-  "peaky blinders": "peaky blinderrs",
-
-  "seks": "seeks",
-  "porno": "porrno",
-  "mesum": "mesuum",
-  "telanjang": "telanjaang",
-  "bugil": "bugiil",
-  "janda panas": "jandaa panaas",
-  "bokep": "bokeep",
-  "VCS": "V C S",
-  "ngentot": "ngenttot",
-  "esek-esek": "esek-esekk",
-  "boobs": "boobss",
-  "teen": "teenn",
-  "tits": "titss",
-  "porn": "porrn",
-  
-  "xxx": "xxxt",
-  "nude": "nudee",
-  "hentai": "hentaaai",
-  "milf": "milff",
-  "bdsm": "bdsmm",
-  "gay": "gaay",
-  "lesbian": "lesbiann",
-  "hardcore": "hardcoore",
-  "fetish": "fetissh",
-  "pussy": "pussyy",
-  "dick": "dicck",
-  "cock": "cocck",
-  "anal": "anaal",
-  "cum": "cuum",
-  "blowjob": "bloowjob",
-  "orgy": "orgyy",
-  "deepthroat": "deepthroatt"
-
+        "lust": "luust", "intimate": "intimaate", "flirt": "fliirt", "telegram": "teelegram",
+        "premium": "preemium", "naked": "nakd", "horny": "horni", "onlyfans": "onlyfaans",
+        "porn": "porrn", "xxx": "xxX", "hacked": "haacked", "casino": "casinno",
+        "betting": "bettiing", "bitcoin": "bitcoiin", "illegal": "illegaal", "fraud": "frauud",
+        "weapon": "weaponn", "terrorist": "terrorriist", "video": "vidio", "viral": "vairal"
     };
 
-    function removeEmojis(text) {
-        return text.replace(/\p{Emoji}/gu, ' ');
+    function modifySentences() {
+        let inputText = document.getElementById("wordList").value.trim();
+        
+        // Split input into separate sentences (line-by-line)
+        let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "");
+
+        // Modify words in each sentence
+        let modifiedSentences = sentences.map(sentence => {
+            return sentence.split(" ").map(word => {
+                let cleanWord = word.toLowerCase();
+                return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
+            }).join(" ");
+        });
+
+        // Format output
+        let finalOutput = `[\n"${modifiedSentences.join('",\n"')}"\n]`;
+        
+        document.getElementById("result").innerText = finalOutput;
     }
 
-    function filterWords() {
-        let description = document.getElementById("description").value;
-        
-        description = removeEmojis(description);
-        
-        Object.keys(wordModifications).forEach(word => {
-            let regex = new RegExp("\\b" + word + "\\b", "gi");
-            description = description.replace(regex, wordModifications[word]);
-        });
-        
-        document.getElementById("result").innerText = description.trim();
-    }
-    
     function copyText() {
         let text = document.getElementById("result").innerText;
         navigator.clipboard.writeText(text).then(() => {
