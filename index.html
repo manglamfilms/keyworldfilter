@@ -25,7 +25,7 @@
   
   <script>
     const wordModifications = { 
-        "desi": "desii","pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", 
+        "desi": "desii", "pornhub": "pornhab", "hot": "hoot", "sexy": "seexy", 
         "aunty": "auntee", "romance": "romaance", "love": "loove",
         "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai",
         "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
@@ -37,33 +37,42 @@
     function modifySentences() {
         let inputText = document.getElementById("wordList").value.trim();
         
-        // Split input into separate sentences (line-by-line)
+        if (!inputText) {
+            alert("Please enter some text!");
+            return;
+        }
+        
         let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "");
 
-        // Modify words in each sentence
         let modifiedSentences = sentences.map(sentence => {
             let words = sentence.split(" ");
             let modifiedWords = words.map(word => {
                 let cleanWord = word.toLowerCase();
                 return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
             });
-
-            // Add "rsa yetar" at the end of modified sentences
             return modifiedWords.join(" ") + " rsa yetar";
         });
 
-        // Format output
-        let finalOutput = `[\n"${modifiedSentences.join('",\n"')}"\n]`;
+        let finalOutput = `[
+  "${modifiedSentences.join('",\n  "')}"
+]`;
         
         document.getElementById("result").innerText = finalOutput;
     }
 
     function copyText() {
         let text = document.getElementById("result").innerText;
+        
+        if (!text) {
+            alert("No text to copy!");
+            return;
+        }
+        
         navigator.clipboard.writeText(text).then(() => {
             alert("Copied to clipboard!");
         }).catch(err => {
             console.error("Failed to copy: ", err);
+            alert("Failed to copy!");
         });
     }
   </script>
