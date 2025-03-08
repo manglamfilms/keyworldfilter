@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Username Generator</title>
+  <title>Username Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,11 +12,13 @@
       text-align: center;
       padding: 20px;
     }
-    textarea, input {
+    textarea {
       padding: 10px;
       font-size: 16px;
       width: 80%;
       max-width: 500px;
+      height: 150px;
+      margin-bottom: 10px;
     }
     button {
       padding: 10px 15px;
@@ -38,8 +40,8 @@
 <body>
 
   <h1>Custom Username Generator</h1>
-  <p>Enter your name:</p>
-  <textarea id="usernameInput" placeholder="Enter your name"></textarea>
+  <p>Enter your text (each line will be processed separately):</p>
+  <textarea id="usernameInput" placeholder="Enter your input text here..."></textarea>
   <br>
   <button onclick="generateUsername()">Generate</button>
   <button onclick="copyOutput()">Copy Output</button>
@@ -48,40 +50,34 @@
 
   <script>
     function generateUsername() {
-      // यूज़र इनपुट लें
+      // इनपुट टेक्स्ट लें और लाइन-बाय-लाइन प्रोसेस करें
       let input = document.getElementById("usernameInput").value;
+      let lines = input.split(/\n/).filter(line => line.trim() !== "");
+      let finalOutput = "";
       
-      // "t.me/" को हटाएं
-      input = input.replace(/t\.me\//gi, "");
+      lines.forEach(line => {
+        // "t.me/" जैसे पैटर्न हटाएं (अगर मौजूद हो)
+        line = line.replace(/t\.me\//gi, "");
+        // सभी स्पेशल कैरेक्टर्स हटाएं (केवल अक्षर, अंक और स्पेस रहें)
+        line = line.replace(/[^a-zA-Z0-9\s]/g, "");
+        // शब्दों में विभाजित करें
+        let words = line.trim().split(/\s+/);
+        // केवल पहले 4 शब्द रखें (अगर 4 से कम हों तो जितने हों)
+        words = words.slice(0, 4);
+        // अंडरस्कोर से जोड़ें
+        let joined = words.join("_");
+        // "series" जोड़ें (नोट: उदाहरण के अनुसार कोई अतिरिक्त अंडरस्कोर नहीं)
+        let username = joined + "series";
+        // डबल कोट्स में लपेटें और कॉमा के साथ नई लाइन में जोड़ें
+        finalOutput += `"${username}",<br>`;
+      });
       
-      // सभी स्पेशल कैरेक्टर्स (केवल अल्फा-न्यूमेरिक और स्पेस छोड़ें) हटा दें
-      input = input.replace(/[^a-zA-Z0-9\s]/g, "");
-      
-      // इनपुट को ट्रिम करें और स्पेस के आधार पर शब्दों में बांटें
-      let words = input.trim().split(/\s+/);
-      
-      // केवल पहले 26 शब्द रखें (यदि 26 से अधिक हैं)
-      words = words.slice(0, 26);
-      
-      // हर शब्द को डबल कोट्स में लपेटें
-      let outputLines = words.map(word => `"${word}"`);
-      
-      // अंत में "Series" जोड़ें
-      outputLines.push(`"Series"`);
-      
-      // हर लाइन के अंत में कॉमा (सिवाय आखिरी लाइन के) और <br> के साथ जोड़ें
-      let finalOutput = outputLines.map((line, index) => {
-        return index !== outputLines.length - 1 ? line + "," : line;
-      }).join("<br>");
-      
-      // आउटपुट दिखाएं
       document.getElementById("output").innerHTML = finalOutput;
     }
     
     function copyOutput() {
       let outputDiv = document.getElementById("output");
-      
-      // <br> को newline में बदलें ताकि कॉपी करने पर फॉर्मेट बना रहे
+      // <br> टैग को newline में बदलें ताकि कॉपी करने पर फॉर्मेट बना रहे
       let textToCopy = outputDiv.innerHTML.replace(/<br\s*\/?>/mg, "\n");
       
       let tempTextarea = document.createElement("textarea");
