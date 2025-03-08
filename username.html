@@ -1,59 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Username Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-        input {
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        #output {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            color: yellow;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Username Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    textarea, input {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      max-width: 500px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 10px 5px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      text-align: left;
+      background-color: #222;
+      padding: 10px;
+      display: inline-block;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>Custom Username Generator</h1>
-    <p>Enter your name:</p>
-    <input type="text" id="usernameInput" placeholder="Enter your name">
-    <button onclick="generateUsername()">Generate</button>
+  <h1>Custom Username Generator</h1>
+  <p>Enter your name:</p>
+  <textarea id="usernameInput" placeholder="Enter your name"></textarea>
+  <br>
+  <button onclick="generateUsername()">Generate</button>
+  <button onclick="copyOutput()">Copy Output</button>
 
-    <div id="output"></div>
+  <div id="output"></div>
 
-    <script>
-        function generateUsername() {
-            let name = document.getElementById("usernameInput").value.trim();
-            
-            if (name === "") {
-                document.getElementById("output").innerHTML = "Please enter a name!";
-                return;
-            }
-
-            let formattedName = name.replace(/\s+/g, "_"); // Replace spaces with "_"
-            let finalUsername = formattedName + "_Series"; // Add "_Series" at the end
-
-            document.getElementById("output").innerHTML = "Generated Username: <br><strong>" + finalUsername + "</strong>";
-        }
-    </script>
+  <script>
+    function generateUsername() {
+      // यूज़र इनपुट लें
+      let input = document.getElementById("usernameInput").value;
+      
+      // "t.me/" को हटाएं
+      input = input.replace(/t\.me\//gi, "");
+      
+      // सभी स्पेशल कैरेक्टर्स (केवल अल्फा-न्यूमेरिक और स्पेस छोड़ें) हटा दें
+      input = input.replace(/[^a-zA-Z0-9\s]/g, "");
+      
+      // इनपुट को ट्रिम करें और स्पेस के आधार पर शब्दों में बांटें
+      let words = input.trim().split(/\s+/);
+      
+      // केवल पहले 26 शब्द रखें (यदि 26 से अधिक हैं)
+      words = words.slice(0, 26);
+      
+      // हर शब्द को डबल कोट्स में लपेटें
+      let outputLines = words.map(word => `"${word}"`);
+      
+      // अंत में "Series" जोड़ें
+      outputLines.push(`"Series"`);
+      
+      // हर लाइन के अंत में कॉमा (सिवाय आखिरी लाइन के) और <br> के साथ जोड़ें
+      let finalOutput = outputLines.map((line, index) => {
+        return index !== outputLines.length - 1 ? line + "," : line;
+      }).join("<br>");
+      
+      // आउटपुट दिखाएं
+      document.getElementById("output").innerHTML = finalOutput;
+    }
+    
+    function copyOutput() {
+      let outputDiv = document.getElementById("output");
+      
+      // <br> को newline में बदलें ताकि कॉपी करने पर फॉर्मेट बना रहे
+      let textToCopy = outputDiv.innerHTML.replace(/<br\s*\/?>/mg, "\n");
+      
+      let tempTextarea = document.createElement("textarea");
+      tempTextarea.value = textToCopy;
+      document.body.appendChild(tempTextarea);
+      tempTextarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempTextarea);
+      
+      alert("Output copied to clipboard!");
+    }
+  </script>
 
 </body>
 </html>
