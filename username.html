@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Username Generator</title>
+  <title>Custom Username Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -58,15 +58,15 @@
       lines.forEach(line => {
         // "t.me/" जैसे पैटर्न हटाएं (अगर मौजूद हो)
         line = line.replace(/t\.me\//gi, "");
-        // सभी स्पेशल कैरेक्टर्स हटाएं (केवल अक्षर, अंक और स्पेस रहें)
-        line = line.replace(/[^a-zA-Z0-9\s]/g, "");
+        // "_" को भी रहने दें, इसलिए केवल अल्फा-न्यूमेरिक, स्पेस और "_" रखें
+        line = line.replace(/[^a-zA-Z0-9\s_]/g, "");
         // शब्दों में विभाजित करें
         let words = line.trim().split(/\s+/);
         // केवल पहले 4 शब्द रखें (अगर 4 से कम हों तो जितने हों)
         words = words.slice(0, 4);
-        // अंडरस्कोर से जोड़ें
+        // अंडरस्कोर से जोड़ें (यदि पहले से "_" है, तो वे वैसे ही रहेंगे)
         let joined = words.join("_");
-        // "series" जोड़ें (नोट: उदाहरण के अनुसार कोई अतिरिक्त अंडरस्कोर नहीं)
+        // "series" जोड़ें
         let username = joined + "series";
         // डबल कोट्स में लपेटें और कॉमा के साथ नई लाइन में जोड़ें
         finalOutput += `"${username}",<br>`;
