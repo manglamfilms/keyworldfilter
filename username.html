@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Username Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Custom Username Generator</h1>
+    <p>Enter your name:</p>
+    <input type="text" id="usernameInput" placeholder="Enter your name">
+    <button onclick="generateUsername()">Generate</button>
+
+    <div id="output"></div>
+
+    <script>
+        function generateUsername() {
+            let name = document.getElementById("usernameInput").value.trim();
+            
+            if (name === "") {
+                document.getElementById("output").innerHTML = "Please enter a name!";
+                return;
+            }
+
+            let formattedName = name.replace(/\s+/g, "_"); // Replace spaces with "_"
+            let finalUsername = formattedName + "_Series"; // Add "_Series" at the end
+
+            document.getElementById("output").innerHTML = "Generated Username: <br><strong>" + finalUsername + "</strong>";
+        }
+    </script>
+
+</body>
+</html>
