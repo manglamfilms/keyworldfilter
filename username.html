@@ -61,11 +61,15 @@
         // केवल अल्फ़ान्यूमेरिक, स्पेस और "_" को रहने दें
         line = line.replace(/[^a-zA-Z0-9\s_]/g, "");
 
-        // लाइन को ट्रिम करें और पहले 28 अक्षर ही लें
-        let trimmed = line.trim().substring(0, 28);
+        // शब्दों में विभाजित करें और "_" से जोड़ें
+        let words = line.trim().split(/\s+/);
+        let joined = words.join("_"); // स्पेस को "_" से बदलें
+        
+        // पहले 28 अक्षर ही लें (जिसमें "_" भी गिना जाएगा)
+        let trimmed = joined.substring(0, 28);
 
         // "series" जोड़ें
-        let username = trimmed + "_eser0g";
+        let username = trimmed + "_s4g";
 
         // डबल कोट्स में लपेटें और कॉमा के साथ नई लाइन में जोड़ें
         finalOutput += `"${username}",<br>`;
