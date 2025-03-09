@@ -55,23 +55,26 @@
       let finalOutput = "";
 
       lines.forEach(line => {
-        // "t.me/" जैसा टेक्स्ट हटाएं
+        // "t.me/" हटाएं
         line = line.replace(/t\.me\//gi, "");
 
         // केवल अल्फ़ान्यूमेरिक, स्पेस और "_" को रहने दें
         line = line.replace(/[^a-zA-Z0-9\s_]/g, "");
 
-        // शब्दों में विभाजित करें और "_" से जोड़ें
+        // स्पेस को "_" से बदलें और डबल "_" को एक ही "_" में बदलें
         let words = line.trim().split(/\s+/);
-        let joined = words.join("_"); // स्पेस को "_" से बदलें
-        
-        // पहले 28 अक्षर ही लें (जिसमें "_" भी गिना जाएगा)
-        let trimmed = joined.substring(0, 28);
+        let joined = words.join("_").replace(/_+/g, "_");
 
-        // "series" जोड़ें
+        // स्टार्ट और एंड पर "_" नहीं होना चाहिए
+        joined = joined.replace(/^_+|_+$/g, "");
+
+        // "s4g" जोड़ने के बाद कुल 23 अक्षरों की सीमा
+        let maxLength = 23 - "_s4g".length;
+        let trimmed = joined.substring(0, maxLength);
+
         let username = trimmed + "_s4g";
 
-        // डबल कोट्स में लपेटें और कॉमा के साथ नई लाइन में जोड़ें
+        // आउटपुट में कोट्स के साथ जोड़ें
         finalOutput += `"${username}",<br>`;
       });
 
