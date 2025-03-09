@@ -50,43 +50,43 @@
 
   <script>
     function generateUsername() {
-      // इनपुट टेक्स्ट लें और लाइन-बाय-लाइन प्रोसेस करें
       let input = document.getElementById("usernameInput").value;
       let lines = input.split(/\n/).filter(line => line.trim() !== "");
       let finalOutput = "";
-      
+
       lines.forEach(line => {
-        // "t.me/" जैसे पैटर्न हटाएं (अगर मौजूद हो)
+        // "t.me/" जैसा टेक्स्ट हटाएं
         line = line.replace(/t\.me\//gi, "");
-        // "_" को भी रहने दें, इसलिए केवल अल्फा-न्यूमेरिक, स्पेस और "_" रखें
+
+        // केवल अल्फ़ान्यूमेरिक, स्पेस और "_" को रहने दें
         line = line.replace(/[^a-zA-Z0-9\s_]/g, "");
-        // शब्दों में विभाजित करें
-        let words = line.trim().split(/\s+/);
-        // केवल पहले 4 शब्द रखें (अगर 4 से कम हों तो जितने हों)
-        words = words.slice(0, 4);
-        // अंडरस्कोर से जोड़ें (यदि पहले से "_" है, तो वे वैसे ही रहेंगे)
-        let joined = words.join("_");
+
+        // लाइन को ट्रिम करें और पहले 28 अक्षर ही लें
+        let trimmed = line.trim().substring(0, 28);
+
         // "series" जोड़ें
-        let username = joined + "_ser0g";
+        let username = trimmed + "_ser0g";
+
         // डबल कोट्स में लपेटें और कॉमा के साथ नई लाइन में जोड़ें
         finalOutput += `"${username}",<br>`;
       });
-      
+
       document.getElementById("output").innerHTML = finalOutput;
     }
-    
+
     function copyOutput() {
       let outputDiv = document.getElementById("output");
-      // <br> टैग को newline में बदलें ताकि कॉपी करने पर फॉर्मेट बना रहे
+
+      // <br> को newline में बदलें ताकि कॉपी करने पर फॉर्मेट सही रहे
       let textToCopy = outputDiv.innerHTML.replace(/<br\s*\/?>/mg, "\n");
-      
+
       let tempTextarea = document.createElement("textarea");
       tempTextarea.value = textToCopy;
       document.body.appendChild(tempTextarea);
       tempTextarea.select();
       document.execCommand("copy");
       document.body.removeChild(tempTextarea);
-      
+
       alert("Output copied to clipboard!");
     }
   </script>
