@@ -25,13 +25,14 @@
   
   <script>
     const wordModifications = { 
-        "desi": "desii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", 
-        "aunty": "auntee", "romance": "romaance", "love": "loove",
-        "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai",
+        "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", 
+        "aunty": "auntee", "bhabhi": "bhabhii", "romance": "romaance", "love": "loove",
+        "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai", "vairal": "viral",
         "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
         "fetish": "fetissh", "pussy": "pussyy", "dick": "dicck", "cock": "cocck",
         "anal": "anaal", "cum": "cuum", "blowjob": "bloowjob", "orgy": "orgyy",
-        "deepthroat": "deepthroatt"
+        "deepthroat": "deepthroatt", "video": "vidio", "top": "topp", "web": "weeb",
+        "jonysins": "jony_sins", "mia": "miyaa", "miya": "miiya", "khalifa": "khalifaa"
     };
 
     function modifySentences() {
@@ -41,15 +42,15 @@
             return;
         }
         
-        let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "");
+        let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "" && !/^[\s\-_|\[\]]+$/.test(line));
         
         let modifiedSentences = sentences.map(sentence => {
-            let words = sentence.split(" ");
+            let words = sentence.split(/\s+/);
             let modifiedWords = words.map(word => {
                 let cleanWord = word.toLowerCase();
                 return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
             });
-            return modifiedWords.join(" ");
+            return `"${modifiedWords.join(" ")}"`;
         });
 
         document.getElementById("result").innerText = modifiedSentences.join("\n");
