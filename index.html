@@ -71,3 +71,105 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Username Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    textarea {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      max-width: 500px;
+      height: 150px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 10px 5px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      text-align: left;
+      background-color: #222;
+      padding: 10px;
+      display: inline-block;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Custom Username Generator</h1>
+  <p>Enter your text (each line will be processed separately):</p>
+  <textarea id="usernameInput" placeholder="Enter your input text here..."></textarea>
+  <br>
+  <button onclick="generateUsername()">Generate</button>
+  <button onclick="copyOutput()">Copy Output</button>
+
+  <div id="output"></div>
+
+  <script>
+    function generateUsername() {
+      let input = document.getElementById("usernameInput").value;
+      let lines = input.split(/\n/).filter(line => line.trim() !== "");
+      let finalOutput = "";
+
+      lines.forEach(line => {
+        // "t.me/" हटाएं
+        line = line.replace(/t\.me\//gi, "");
+
+        // केवल अल्फ़ान्यूमेरिक, स्पेस और "_" को रहने दें
+        line = line.replace(/[^a-zA-Z0-9\s_]/g, "");
+
+        // स्पेस को "_" से बदलें और डबल "_" को एक ही "_" में बदलें
+        let words = line.trim().split(/\s+/);
+        let joined = words.join("_").replace(/_+/g, "_");
+
+        // स्टार्ट और एंड पर "_" नहीं होना चाहिए
+        joined = joined.replace(/^_+|_+$/g, "");
+
+        // "s4g" जोड़ने के बाद कुल 23 अक्षरों की सीमा
+        let maxLength = 23 - "_s4g".length;
+        let trimmed = joined.substring(0, maxLength);
+
+        let username = trimmed + "_s4g";
+
+        // आउटपुट में कोट्स के साथ जोड़ें
+        finalOutput += `"${username}",<br>`;
+      });
+
+      document.getElementById("output").innerHTML = finalOutput;
+    }
+
+    function copyOutput() {
+      let outputDiv = document.getElementById("output");
+
+      // <br> को newline में बदलें ताकि कॉपी करने पर फॉर्मेट सही रहे
+      let textToCopy = outputDiv.innerHTML.replace(/<br\s*\/?>/mg, "\n");
+
+      let tempTextarea = document.createElement("textarea");
+      tempTextarea.value = textToCopy;
+      document.body.appendChild(tempTextarea);
+      tempTextarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempTextarea);
+
+      alert("Output copied to clipboard!");
+    }
+  </script>
+
+</body>
+</html>
