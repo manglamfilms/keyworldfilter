@@ -50,7 +50,7 @@
                 let cleanWord = word.toLowerCase();
                 return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
             });
-            return `"${modifiedWords.join(" ")}"`;
+            return `"${modifiedWords.join(" ")}",`;  // **✅ हर लाइन के अंत में ',' जोड़ दिया**
         });
 
         document.getElementById("result").innerText = modifiedSentences.join("\n");
@@ -71,6 +71,7 @@
   </script>
 </body>
 </html>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
