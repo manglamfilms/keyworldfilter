@@ -52,17 +52,7 @@
             return modifiedWords.join(" ");
         });
 
-        let groupedOutput = {};
-        modifiedSentences.forEach((sentence, index) => {
-            let groupNumber = Math.floor(index / 10) + 1;
-            if (!groupedOutput[groupNumber]) {
-                groupedOutput[groupNumber] = [];
-            }
-            groupedOutput[groupNumber].push(sentence);
-        });
-
-        let formattedOutput = JSON.stringify(groupedOutput, null, 2);
-        document.getElementById("result").innerText = formattedOutput;
+        document.getElementById("result").innerText = modifiedSentences.join("\n");
     }
 
     function copyText() {
@@ -76,13 +66,6 @@
         }).catch(err => {
             console.error("Failed to copy: ", err);
         });
-    }
-  </script>
-   <button onclick="openUsername()">Click Here</button>
-
-  <script>
-    function openUsername() {
-      window.location.href = 'username.html';
     }
   </script>
 </body>
