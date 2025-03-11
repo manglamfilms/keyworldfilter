@@ -7,7 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
     textarea, input, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
-    button { cursor: pointer; background-color: #ff5722; border: none; }
+    button { cursor: pointer; background-color: #ff5722; border: none; padding: 10px; }
     .copy-btn { background-color: #008CBA; }
     #result, #output { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; display: inline-block; text-align: left; max-width: 90%; }
   </style>
@@ -46,18 +46,23 @@
         "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive"
     };
 
-    function filterText(text) {
-      return text.split(" ").map(word => wordModifications[word.toLowerCase()] || word).join(" ");
-    }
-
     function modifySentences() {
         let inputText = document.getElementById("wordList").value.trim();
         if (!inputText) {
             alert("Please enter some text!");
             return;
         }
-        let modifiedText = inputText.split("\n").map(line => filterText(line.trim())).join("\n");
-        document.getElementById("result").innerText = modifiedText;
+        
+        let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "" && !/^[\s\-_|\[\]]+$/.test(line));
+        
+        let modifiedSentences = sentences.map(sentence => {
+            return sentence.split(/\s+/).map(word => {
+                let cleanWord = word.toLowerCase();
+                return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
+            }).join(" ");
+        });
+
+        document.getElementById("result").innerText = modifiedSentences.join("\n");
     }
 
     function generateUsername() {
@@ -68,11 +73,18 @@
       lines.forEach(line => {
         line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9\s_]/g, "").trim();
         let words = line.split(/\s+/);
+
+        // ✅ Apply word modifications before joining
+        words = words.map(word => {
+            let cleanWord = word.toLowerCase();
+            return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
+        });
+
         let joined = words.join("_").replace(/_+/g, "_").replace(/^_+|_+$/g, "");
         let maxLength = 23 - "_s8g".length;
         let trimmed = joined.substring(0, maxLength);
         let username = trimmed + "_s8g";
-        finalOutput += `"${filterText(username)}",\n`;
+        finalOutput += `"${username}",\n`;
       });
 
       document.getElementById("output").innerText = finalOutput;
