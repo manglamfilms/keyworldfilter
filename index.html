@@ -6,7 +6,7 @@
   <title>Word Modifier & Username Generator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
-    textarea, input, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
+    textarea, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
     button { cursor: pointer; background-color: #ff5722; border: none; padding: 10px; }
     .copy-btn { background-color: #008CBA; }
     #result, #output { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; display: inline-block; text-align: left; max-width: 90%; }
@@ -32,18 +32,21 @@
 
   <script>
     const wordModifications = { 
-        "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy",  
-        "adults": "adalt", "aunty": "auntee", "bhabhi": "bhabhii", "romance": "romaance", 
-        "love": "loove", "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai", 
-        "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
-        "fetish": "fetissh", "pussy": "pussyy", "dick": "dicck", "cock": "cocck",
-        "anal": "anaal", "cum": "cuum", "blowjob": "bloowjob", "orgy": "orgyy",
-        "deepthroat": "deepthroatt", "video": "vidio", "top": "topp", "web": "weeb",
-        "telegram": "teelegram", "premium": "preemium", "hacked": "haacked", "cracked": "craacked",
-        "casino": "casinno", "betting": "bettiing", "porno": "prono", "bitcoin": "bitcoiin",
-        "drug": "druug", "scam": "scaam", "deepfake": "deepfaake", "illegal": "illegaal",
-        "spyware": "spywaare", "fraud": "frauud", "hacking": "haacking",
-        "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive"
+        "desi": "desii", "xxx": "xxxt", "hot": "hoot", "sexy": "seexy",  
+        "pornhub": "pornhab", "aunty": "auntee", "bhabhi": "bhabhii",
+        "romance": "romaance", "love": "loove", "nude": "nudee",
+        "hentai": "hentaaai", "milf": "milff", "bdsm": "bdsmm", 
+        "gay": "gaay", "lesbian": "lesbiann", "fetish": "fetissh",
+        "pussy": "pussyy", "dick": "dicck", "cock": "cocck", 
+        "anal": "anaal", "cum": "cuum", "blowjob": "bloowjob",
+        "orgy": "orgyy", "deepthroat": "deepthroatt", "video": "vidio",
+        "top": "topp", "telegram": "teelegram", "premium": "preemium",
+        "hacked": "haacked", "cracked": "craacked", "casino": "casinno",
+        "betting": "bettiing", "porno": "prono", "bitcoin": "bitcoiin",
+        "drug": "druug", "scam": "scaam", "deepfake": "deepfaake",
+        "illegal": "illegaal", "spyware": "spywaare", "fraud": "frauud",
+        "hacking": "haacking", "bomb": "boomb", "weapon": "weaponn",
+        "terrorist": "terrorriist", "explosive": "explosiive"
     };
 
     function modifySentences() {
@@ -53,16 +56,12 @@
             return;
         }
         
-        let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "" && !/^[\s\-_|\[\]]+$/.test(line));
-        
-        let modifiedSentences = sentences.map(sentence => {
-            return sentence.split(/\s+/).map(word => {
-                let cleanWord = word.toLowerCase();
-                return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
-            }).join(" ");
-        });
+        let modifiedSentences = inputText.split(/\s+/).map(word => {
+            let cleanWord = word.toLowerCase();
+            return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
+        }).join(" ");
 
-        document.getElementById("result").innerText = modifiedSentences.join("\n");
+        document.getElementById("result").innerText = modifiedSentences;
     }
 
     function generateUsername() {
@@ -71,10 +70,10 @@
       let finalOutput = "";
 
       lines.forEach(line => {
-        line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9\s_]/g, "").trim();
+        line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9_]/g, " ").trim();
         let words = line.split(/\s+/);
 
-        // ✅ Apply word modifications before joining
+        // ✅ Apply word modifications
         words = words.map(word => {
             let cleanWord = word.toLowerCase();
             return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
