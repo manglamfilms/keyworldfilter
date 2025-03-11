@@ -168,7 +168,9 @@
       let suffix = document.getElementById("suffixInput").value.trim();
       let keyword = document.getElementById("usernameKeyword").value.trim();
       let lines = input.split(/\n/).filter(line => line.trim() !== "");
-      let finalOutput = "";
+      
+      // Use a Set to filter out duplicate usernames
+      let uniqueUsernames = new Set();
 
       lines.forEach(line => {
         line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9_]/g, " ").trim();
@@ -188,10 +190,10 @@
             username += " " + keyword;
         }
 
-        finalOutput += `"${username}",\n`;
+        uniqueUsernames.add(`"${username}"`); // Add to Set (prevents duplicates)
       });
 
-      document.getElementById("output").innerText = finalOutput;
+      document.getElementById("output").innerText = Array.from(uniqueUsernames).join(",\n");
     }
 
     function copyText(elementId) {
