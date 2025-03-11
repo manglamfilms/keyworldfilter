@@ -20,6 +20,12 @@
   <div class="container">
     <h2>Smart Word Modifier</h2>
     <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
+
+    <h3>Add Custom Word Modification</h3>
+    <input type="text" id="customWord" placeholder="Enter word to modify (e.g., apple)">
+    <input type="text" id="customReplacement" placeholder="Enter replacement (e.g., aaple)">
+    <button onclick="addCustomWord()">Add Word</button>
+
     <button onclick="modifySentences()">Modify Text</button>
     <button class="copy-btn" onclick="copyText('result')">Copy</button>
     <h3>Modified Output:</h3>
@@ -38,7 +44,7 @@
   </div>
 
   <script>
-    const wordModifications = { 
+    let wordModifications = { 
         "desi": "desii", "xxx": "xxxt", "hot": "hoot", "sexy": "seexy",  
         "pornhub": "pornhab", "aunty": "auntee", "bhabhi": "bhabhii",
         "romance": "romaance", "love": "loove", "nude": "nudee",
@@ -69,6 +75,19 @@
         }).join(" ");
 
         document.getElementById("result").innerText = modifiedSentences;
+    }
+
+    function addCustomWord() {
+        let customWord = document.getElementById("customWord").value.trim().toLowerCase();
+        let customReplacement = document.getElementById("customReplacement").value.trim();
+
+        if (!customWord || !customReplacement) {
+            alert("Please enter both a word and its replacement.");
+            return;
+        }
+
+        wordModifications[customWord] = customReplacement;
+        alert(`Added: ${customWord} → ${customReplacement}`);
     }
 
     function generateUsername() {
