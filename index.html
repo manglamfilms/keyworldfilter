@@ -6,7 +6,7 @@
   <title>Word Modifier & Username Generator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
-    textarea, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
+    textarea, input, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
     button { cursor: pointer; background-color: #ff5722; border: none; padding: 10px; }
     .copy-btn { background-color: #008CBA; }
     #result, #output { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; display: inline-block; text-align: left; max-width: 90%; }
@@ -25,6 +25,7 @@
 
   <h2>Custom Username Generator</h2>
   <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
+  <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
   <button onclick="generateUsername()">Generate</button>
   <button class="copy-btn" onclick="copyText('output')">Copy</button>
   <h3>Generated Usernames:</h3>
@@ -66,6 +67,7 @@
 
     function generateUsername() {
       let input = document.getElementById("usernameInput").value;
+      let suffix = document.getElementById("suffixInput").value.trim();
       let lines = input.split(/\n/).filter(line => line.trim() !== "");
       let finalOutput = "";
 
@@ -80,9 +82,9 @@
         });
 
         let joined = words.join("_").replace(/_+/g, "_").replace(/^_+|_+$/g, "");
-        let maxLength = 23 - "_s8g".length;
+        let maxLength = 23 - suffix.length;
         let trimmed = joined.substring(0, maxLength);
-        let username = trimmed + "_s8g";
+        let username = trimmed + suffix;
         finalOutput += `"${username}",\n`;
       });
 
