@@ -6,30 +6,36 @@
   <title>Word Modifier & Username Generator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
-    textarea, input, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
-    button { cursor: pointer; background-color: #ff5722; border: none; padding: 10px; }
+    .container { width: 90%; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; background-color: #222; box-shadow: 0 0 10px rgba(255,255,255,0.1); margin-bottom: 20px; }
+    textarea, input, button { width: 90%; padding: 10px; margin: 10px 0; background-color: #333; color: white; border: 1px solid #555; border-radius: 5px; }
+    button { cursor: pointer; background-color: #ff5722; border: none; padding: 10px; font-weight: bold; }
     .copy-btn { background-color: #008CBA; }
-    #result, #output { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; display: inline-block; text-align: left; max-width: 90%; }
+    h2 { margin-top: 0; }
+    .output-box { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #333; word-wrap: break-word; white-space: pre-wrap; text-align: left; }
   </style>
 </head>
 <body>
 
-  <h2>Smart Word Modifier</h2>
-  <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
-  <button onclick="modifySentences()">Modify Text</button>
-  <button class="copy-btn" onclick="copyText('result')">Copy</button>
-  <h3>Modified Output:</h3>
-  <div id="result"></div>
+  <!-- Smart Word Modifier -->
+  <div class="container">
+    <h2>Smart Word Modifier</h2>
+    <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
+    <button onclick="modifySentences()">Modify Text</button>
+    <button class="copy-btn" onclick="copyText('result')">Copy</button>
+    <h3>Modified Output:</h3>
+    <div id="result" class="output-box"></div>
+  </div>
 
-  <hr>
-
-  <h2>Custom Username Generator</h2>
-  <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
-  <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
-  <button onclick="generateUsername()">Generate</button>
-  <button class="copy-btn" onclick="copyText('output')">Copy</button>
-  <h3>Generated Usernames:</h3>
-  <div id="output"></div>
+  <!-- Custom Username Generator -->
+  <div class="container">
+    <h2>Custom Username Generator</h2>
+    <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
+    <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
+    <button onclick="generateUsername()">Generate</button>
+    <button class="copy-btn" onclick="copyText('output')">Copy</button>
+    <h3>Generated Usernames:</h3>
+    <div id="output" class="output-box"></div>
+  </div>
 
   <script>
     const wordModifications = { 
