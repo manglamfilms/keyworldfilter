@@ -3,104 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Word Modifier</title>
+  <title>Word Modifier & Username Generator</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; }
-    textarea, input { width: 100%; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
-    button { padding: 10px 20px; cursor: pointer; background-color: #ff5722; color: white; border: none; }
-    #result { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; }
-    #copyButton { margin-top: 10px; background-color: #008CBA; }
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
+    textarea, input, button { width: 80%; max-width: 500px; padding: 10px; margin: 10px 0; background-color: #222; color: white; border: 1px solid #444; }
+    button { cursor: pointer; background-color: #ff5722; border: none; }
+    .copy-btn { background-color: #008CBA; }
+    #result, #output { margin-top: 20px; padding: 10px; border: 1px solid #444; background-color: #222; word-wrap: break-word; white-space: pre-wrap; display: inline-block; text-align: left; max-width: 90%; }
   </style>
 </head>
 <body>
+
   <h2>Smart Word Modifier</h2>
-  <label for="wordList">Enter Text (Each line as a separate sentence):</label>
   <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
-  
   <button onclick="modifySentences()">Modify Text</button>
-  <button id="copyButton" onclick="copyText()">Copy</button>
-  
+  <button class="copy-btn" onclick="copyText('result')">Copy</button>
   <h3>Modified Output:</h3>
   <div id="result"></div>
-  
+
+  <hr>
+
+  <h2>Custom Username Generator</h2>
+  <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
+  <button onclick="generateUsername()">Generate</button>
+  <button class="copy-btn" onclick="copyText('output')">Copy</button>
+  <h3>Generated Usernames:</h3>
+  <div id="output"></div>
+
   <script>
     const wordModifications = { 
-        "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy",  "adults": "adalt",  
-        "aunty": "auntee", "bhabhi": "bhabhii", "romance": "romaance", "love": "loove",
-        "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai", "vairal": "viral",
+        "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy",  
+        "adults": "adalt", "aunty": "auntee", "bhabhi": "bhabhii", "romance": "romaance", 
+        "love": "loove", "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai", 
         "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
         "fetish": "fetissh", "pussy": "pussyy", "dick": "dicck", "cock": "cocck",
         "anal": "anaal", "cum": "cuum", "blowjob": "bloowjob", "orgy": "orgyy",
         "deepthroat": "deepthroatt", "video": "vidio", "top": "topp", "web": "weeb",
-        "jonysins": "jony_sins", "mia": "miyaa", "miya": "miiya", "khalifa": "khalifaa",
-
-       "desi": "desii","pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", "mature": "maturee",
-        "aunty": "auntee", "romance": "romaance", "love": "loove", "affair": "affaair",
-        "dating": "daating", "night": "niight", "kiss": "kiiss", "nude": "nuude",
-        "erotic": "erootic", "adult": "adults", "bold": "boold", "passion": "passioon",
-        "lust": "luust", "intimate": "intimaate", "flirt": "fliirt", "bedroom": "bedrooom",
-        "sensual": "sensuall", "playboy": "playbooy", "telegram": "teelegram", "premium": "preemium", "naked": "nakd", "horny": "horni",
-        "onlyfans": "onlyfaans", "mod": "mood", "hacked": "haacked", "cracked": "craacked",
-        "casino": "casinno", "betting": "bettiing", "porn": "porrn", "xxx": "xxX",
-        "free fire": "free fiire", "hacker": "haacker", "cheat": "cheeat", "dark web": "daark web", "porno": "prono",
-        "bitcoin": "bitcoiin", "drug": "druug", "scam": "scaam", "deepfake": "deepfaake",
-        "illegal": "illegaal", "fake id": "faake ID", "hijack": "hijaack", "spyware": "spywaare",
-        "fraud": "frauud", "carding": "cardiing", "phishing": "phishiing", "hacking": "haacking",
-        "cybercrime": "cybercriime", "extortion": "extortiion", "blackmail": "blaackmail",
-        "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive",
-        "mirzapur": "mirzapuur","sacred games": "sacreed games","leaked": "leakedd","lingerie": "lingeri","japanese": "japani","girls": "ladki girl",
-  "family man": "famiy man","ass": "asas","amateur": "amateurs","fucking": "fucka","fuck": "fuckingg","call": "coll","xnxx": "xnx","amazon prime": "amazon prime",
-  "patal lok": "pataal lok","sex": "sexi","sexx": "saxi",
-  "asur": "asurr",
-  "scam 1992": "scaam 1992",
-  "game of thrones": "game of thrones",
-  "money heist": "money heeist",
-  "breaking bad": "breaking baad",
-  "stranger things": "stranger thingz",
-  "lucifer": "luciifer",
-  "squid game": "squid gaame",
-  "avengers": "avengerrs",
-  "joker": "jooker",
-  "titanic": "titannic",
-  "inception": "inceptioon",
-  "fast and furious": "fast and furius",
-  "deadpool": "deadpoool",
-  "the boys": "the boiys",
-  "the witcher": "the witcheer",
-  "peaky blinders": "peaky blinderrs",
-
-  "seks": "seeks",
-  "porno": "porrno",
-  "mesum": "mesuum",
-  "telanjang": "telanjaang",
-  "bugil": "bugiil",
-  "janda panas": "jandaa panaas",
-  "bokep": "bokeep",
-  "VCS": "V C S",
-  "ngentot": "ngenttot",
-  "esek-esek": "esek-esekk",
-  "boobs": "boobss",
-  "teen": "teenn",
-  "tits": "titss",
-  "porn": "porrn",
-  
-  "xxx": "xxxt",
-  "nude": "nudee",
-  "hentai": "hentaaai",
-  "milf": "milff",
-  "bdsm": "bdsmm",
-  "gay": "gaay",
-  "lesbian": "lesbiann",
-  "hardcore": "hardcoore",
-  "fetish": "fetissh",
-  "pussy": "pussyy",
-  "dick": "dicck",
-  "cock": "cocck",
-  "anal": "anaal",
-  "cum": "cuum",
-  "blowjob": "bloowjob",
-  "orgy": "orgyy",
-  "deepthroat": "deepthroatt"
+        "telegram": "teelegram", "premium": "preemium", "hacked": "haacked", "cracked": "craacked",
+        "casino": "casinno", "betting": "bettiing", "porno": "prono", "bitcoin": "bitcoiin",
+        "drug": "druug", "scam": "scaam", "deepfake": "deepfaake", "illegal": "illegaal",
+        "spyware": "spywaare", "fraud": "frauud", "hacking": "haacking",
+        "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive"
     };
 
     function modifySentences() {
@@ -113,19 +56,35 @@
         let sentences = inputText.split("\n").map(line => line.trim()).filter(line => line !== "" && !/^[\s\-_|\[\]]+$/.test(line));
         
         let modifiedSentences = sentences.map(sentence => {
-            let words = sentence.split(/\s+/);
-            let modifiedWords = words.map(word => {
+            return sentence.split(/\s+/).map(word => {
                 let cleanWord = word.toLowerCase();
                 return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
-            });
-            return `"${modifiedWords.join(" ")}",`;  // **✅ हर लाइन के अंत में ',' जोड़ दिया**
+            }).join(" ");
         });
 
         document.getElementById("result").innerText = modifiedSentences.join("\n");
     }
 
-    function copyText() {
-        let text = document.getElementById("result").innerText;
+    function generateUsername() {
+      let input = document.getElementById("usernameInput").value;
+      let lines = input.split(/\n/).filter(line => line.trim() !== "");
+      let finalOutput = "";
+
+      lines.forEach(line => {
+        line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9\s_]/g, "").trim();
+        let words = line.split(/\s+/);
+        let joined = words.join("_").replace(/_+/g, "_").replace(/^_+|_+$/g, "");
+        let maxLength = 23 - "_s8g".length;
+        let trimmed = joined.substring(0, maxLength);
+        let username = trimmed + "_s8g";
+        finalOutput += `"${username}",\n`;
+      });
+
+      document.getElementById("output").innerText = finalOutput;
+    }
+
+    function copyText(elementId) {
+        let text = document.getElementById(elementId).innerText;
         if (!text) {
             alert("Nothing to copy!");
             return;
@@ -135,108 +94,6 @@
         }).catch(err => {
             console.error("Failed to copy: ", err);
         });
-    }
-  </script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Username Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: black;
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    textarea {
-      padding: 10px;
-      font-size: 16px;
-      width: 80%;
-      max-width: 500px;
-      height: 150px;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      margin: 10px 5px;
-      cursor: pointer;
-    }
-    #output {
-      margin-top: 20px;
-      text-align: left;
-      background-color: #222;
-      padding: 10px;
-      display: inline-block;
-      max-width: 90%;
-      word-wrap: break-word;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Custom Username Generator</h1>
-  <p>Enter your text (each line will be processed separately):</p>
-  <textarea id="usernameInput" placeholder="Enter your input text here..."></textarea>
-  <br>
-  <button onclick="generateUsername()">Generate</button>
-  <button onclick="copyOutput()">Copy Output</button>
-
-  <div id="output"></div>
-
-  <script>
-    function generateUsername() {
-      let input = document.getElementById("usernameInput").value;
-      let lines = input.split(/\n/).filter(line => line.trim() !== "");
-      let finalOutput = "";
-
-      lines.forEach(line => {
-        // "t.me/" हटाएं
-        line = line.replace(/t\.me\//gi, "");
-
-        // केवल अल्फ़ान्यूमेरिक, स्पेस और "_" को रहने दें
-        line = line.replace(/[^a-zA-Z0-9\s_]/g, "");
-
-        // स्पेस को "_" से बदलें और डबल "_" को एक ही "_" में बदलें
-        let words = line.trim().split(/\s+/);
-        let joined = words.join("_").replace(/_+/g, "_");
-
-        // स्टार्ट और एंड पर "_" नहीं होना चाहिए
-        joined = joined.replace(/^_+|_+$/g, "");
-
-        // "s4g" जोड़ने के बाद कुल 23 अक्षरों की सीमा
-        let maxLength = 23 - "_s4g".length;
-        let trimmed = joined.substring(0, maxLength);
-
-        let username = trimmed + "_s8g";
-
-        // आउटपुट में कोट्स के साथ जोड़ें
-        finalOutput += `"${username}",<br>`;
-      });
-
-      document.getElementById("output").innerHTML = finalOutput;
-    }
-
-    function copyOutput() {
-      let outputDiv = document.getElementById("output");
-
-      // <br> को newline में बदलें ताकि कॉपी करने पर फॉर्मेट सही रहे
-      let textToCopy = outputDiv.innerHTML.replace(/<br\s*\/?>/mg, "\n");
-
-      let tempTextarea = document.createElement("textarea");
-      tempTextarea.value = textToCopy;
-      document.body.appendChild(tempTextarea);
-      tempTextarea.select();
-      document.execCommand("copy");
-      document.body.removeChild(tempTextarea);
-
-      alert("Output copied to clipboard!");
     }
   </script>
 
