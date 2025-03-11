@@ -26,6 +26,9 @@
     <input type="text" id="customReplacement" placeholder="Enter replacement (e.g., aaple)">
     <button onclick="addCustomWord()">Add Word</button>
 
+    <h3>Add Keyword in Output</h3>
+    <input type="text" id="outputKeyword" placeholder="Enter keyword to add in output (e.g., #Modified)">
+
     <button onclick="modifySentences()">Modify Text</button>
     <button class="copy-btn" onclick="copyText('result')">Copy</button>
     <h3>Modified Output:</h3>
@@ -37,6 +40,10 @@
     <h2>Custom Username Generator</h2>
     <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
     <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
+
+    <h3>Add Keyword in Output</h3>
+    <input type="text" id="usernameKeyword" placeholder="Enter keyword to add in output (e.g., #Username)">
+
     <button onclick="generateUsername()">Generate</button>
     <button class="copy-btn" onclick="copyText('output')">Copy</button>
     <h3>Generated Usernames:</h3>
@@ -45,25 +52,12 @@
 
   <script>
     let wordModifications = { 
-        "desi": "desii", "xxx": "xxxt", "hot": "hoot", "sexy": "seexy",  
-        "pornhub": "pornhab", "aunty": "auntee", "bhabhi": "bhabhii",
-        "romance": "romaance", "love": "loove", "nude": "nudee",
-        "hentai": "hentaaai", "milf": "milff", "bdsm": "bdsmm", 
-        "gay": "gaay", "lesbian": "lesbiann", "fetish": "fetissh",
-        "pussy": "pussyy", "dick": "dicck", "cock": "cocck", 
-        "anal": "anaal", "cum": "cuum", "blowjob": "bloowjob",
-        "orgy": "orgyy", "deepthroat": "deepthroatt", "video": "vidio",
-        "top": "topp", "telegram": "teelegram", "premium": "preemium",
-        "hacked": "haacked", "cracked": "craacked", "casino": "casinno",
-        "betting": "bettiing", "porno": "prono", "bitcoin": "bitcoiin",
-        "drug": "druug", "scam": "scaam", "deepfake": "deepfaake",
-        "illegal": "illegaal", "spyware": "spywaare", "fraud": "frauud",
-        "hacking": "haacking", "bomb": "boomb", "weapon": "weaponn",
-        "terrorist": "terrorriist", "explosive": "explosiive"
+        "desi": "desii", "xxx": "xxxt", "hot": "hoot", "sexy": "seexy"
     };
 
     function modifySentences() {
         let inputText = document.getElementById("wordList").value.trim();
+        let keyword = document.getElementById("outputKeyword").value.trim();
         if (!inputText) {
             alert("Please enter some text!");
             return;
@@ -73,6 +67,10 @@
             let cleanWord = word.toLowerCase();
             return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
         }).join(" ");
+
+        if (keyword) {
+            modifiedSentences += " " + keyword;
+        }
 
         document.getElementById("result").innerText = modifiedSentences;
     }
@@ -93,6 +91,7 @@
     function generateUsername() {
       let input = document.getElementById("usernameInput").value;
       let suffix = document.getElementById("suffixInput").value.trim();
+      let keyword = document.getElementById("usernameKeyword").value.trim();
       let lines = input.split(/\n/).filter(line => line.trim() !== "");
       let finalOutput = "";
 
@@ -100,7 +99,6 @@
         line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9_]/g, " ").trim();
         let words = line.split(/\s+/);
 
-        // ✅ Apply word modifications
         words = words.map(word => {
             let cleanWord = word.toLowerCase();
             return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
@@ -110,6 +108,11 @@
         let maxLength = 23 - suffix.length;
         let trimmed = joined.substring(0, maxLength);
         let username = trimmed + suffix;
+
+        if (keyword) {
+            username += " " + keyword;
+        }
+
         finalOutput += `"${username}",\n`;
       });
 
