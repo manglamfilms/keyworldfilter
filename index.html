@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>शब्द संशोधक और उपयोगकर्ता नाम जनरेटर</title>
+  <title>Word Modifier & Username Generator</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
     .container { width: 90%; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; background-color: #222; box-shadow: 0 0 10px rgba(255,255,255,0.1); margin-bottom: 20px; }
@@ -16,28 +16,43 @@
 </head>
 <body>
 
-  <!-- स्मार्ट वर्ड मॉडिफायर -->
+  <!-- Smart Word Modifier -->
   <div class="container">
-    <h2>स्मार्ट शब्द संशोधक</h2>
-    <textarea id="wordList" rows="6" placeholder="यहाँ टेक्स्ट दर्ज करें..."></textarea>
+    <h2>Smart Word Modifier</h2>
+    <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
 
-    <h3>कस्टम शब्द संशोधन जोड़ें</h3>
-    <input type="text" id="customWord" placeholder="शब्द दर्ज करें (जैसे, apple)">
-    <input type="text" id="customReplacement" placeholder="प्रतिस्थापन दर्ज करें (जैसे, aaple)">
-    <button onclick="addCustomWord()">शब्द जोड़ें</button>
+    <h3>Add Custom Word Modification</h3>
+    <input type="text" id="customWord" placeholder="Enter word to modify (e.g., apple)">
+    <input type="text" id="customReplacement" placeholder="Enter replacement (e.g., aaple)">
+    <button onclick="addCustomWord()">Add Word</button>
 
-    <h3>आउटपुट में कीवर्ड जोड़ें</h3>
-    <input type="text" id="outputKeyword" placeholder="कीवर्ड (जैसे, #Modified)">
+    <h3>Add Keyword in Output</h3>
+    <input type="text" id="outputKeyword" placeholder="Enter keyword to add in output (e.g., #Modified)">
 
-    <button onclick="modifySentences()">संशोधित करें</button>
-    <button class="copy-btn" onclick="copyText('result')">कॉपी करें</button>
-    <h3>संशोधित आउटपुट:</h3>
+    <button onclick="modifySentences()">Modify Text</button>
+    <button class="copy-btn" onclick="copyText('result')">Copy</button>
+    <h3>Modified Output:</h3>
     <div id="result" class="output-box"></div>
+  </div>
+
+  <!-- Custom Username Generator -->
+  <div class="container">
+    <h2>Custom Username Generator</h2>
+    <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
+    <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
+
+    <h3>Add Keyword in Output</h3>
+    <input type="text" id="usernameKeyword" placeholder="Enter keyword to add in output (e.g., #Username)">
+
+    <button onclick="generateUsername()">Generate</button>
+    <button class="copy-btn" onclick="copyText('output')">Copy</button>
+    <h3>Generated Usernames:</h3>
+    <div id="output" class="output-box"></div>
   </div>
 
   <script>
     let wordModifications = { 
-         "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy",  "adults": "adalt",  
+          "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy",  "adults": "adalt",  
          "aunty": "auntee", "bhabhi": "bhabhii", "romance": "romaance", "love": "loove",
          "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai", "vairal": "viral",
          "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
@@ -119,7 +134,7 @@
         let inputText = document.getElementById("wordList").value.trim();
         let keyword = document.getElementById("outputKeyword").value.trim();
         if (!inputText) {
-            alert("कृपया कुछ टेक्स्ट दर्ज करें!");
+            alert("Please enter some text!");
             return;
         }
         
@@ -143,29 +158,57 @@
         let customReplacement = document.getElementById("customReplacement").value.trim();
 
         if (!customWord || !customReplacement) {
-            alert("कृपया दोनों, शब्द और उसका प्रतिस्थापन दर्ज करें।");
+            alert("Please enter both a word and its replacement.");
             return;
         }
 
         wordModifications[customWord] = customReplacement;
-        alert(`जोड़ा गया: ${customWord} → ${customReplacement}`);
-        document.getElementById("customWord").value = "";
-        document.getElementById("customReplacement").value = "";
+        alert(`Added: ${customWord} → ${customReplacement}`);
+    }
+
+    function generateUsername() {
+      let input = document.getElementById("usernameInput").value;
+      let suffix = document.getElementById("suffixInput").value.trim();
+      let keyword = document.getElementById("usernameKeyword").value.trim();
+      let lines = input.split(/\n/).filter(line => line.trim() !== "");
+      
+      let uniqueUsernames = new Set();
+
+      lines.forEach(line => {
+        line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9_]/g, " ").trim();
+        let words = line.split(/\s+/);
+
+        words = words.map(word => {
+            let cleanWord = word.toLowerCase();
+            return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
+        });
+
+        let joined = words.join("_").replace(/_+/g, "_").replace(/^_+|_+$/g, "");
+        let maxLength = 23 - suffix.length;
+        let trimmed = joined.substring(0, maxLength);
+        let username = trimmed + suffix;
+
+        if (keyword) {
+            username += " " + keyword;
+        }
+
+        uniqueUsernames.add(`"${username}"`);
+      });
+
+      document.getElementById("output").innerText = Array.from(uniqueUsernames).join(",\n");
     }
 
     function copyText(elementId) {
         let text = document.getElementById(elementId).innerText;
         if (!text) {
-            alert("कॉपी करने के लिए कुछ भी नहीं है!");
+            alert("Nothing to copy!");
             return;
         }
         navigator.clipboard.writeText(text).then(() => {
-            alert("क्लिपबोर्ड पर कॉपी हो गया!");
+            alert("Copied to clipboard!");
         }).catch(err => {
-            console.error("कॉपी करने में विफल: ", err);
+            console.error("Failed to copy: ", err);
         });
     }
   </script>
 
-</body>
-</html>
