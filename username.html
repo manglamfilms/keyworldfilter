@@ -21,6 +21,7 @@
       padding: 10px 15px;
       font-size: 16px;
       cursor: pointer;
+      margin-right: 10px;
     }
     .result {
       margin-top: 20px;
@@ -34,20 +35,30 @@
 </head>
 <body>
   <h1>Emoji to Space Converter</h1>
-  <textarea id="inputText" placeholder="Enter text with emojis..."></textarea><br>
+  <textarea id="inputText" placeholder="यहाँ अपना टेक्स्ट लिखें (इमोजी सहित)..."></textarea><br>
   <button onclick="convertEmojis()">Convert Emojis to Spaces</button>
+  <button onclick="copyResult()">Copy Output</button>
   <div class="result" id="resultText"></div>
   
   <script>
     function convertEmojis() {
       const input = document.getElementById('inputText').value;
-      // यूनिकोड प्रॉपर्टी एस्केप का उपयोग करते हुए अधिकांश इमोजी को मैच करता है।
+      // Unicode Extended_Pictographic प्रॉपर्टी का उपयोग करते हुए अधिकांश इमोजी को मैच करता है
       const emojiRegex = /\p{Extended_Pictographic}/gu;
-      // प्रत्येक इमोजी के स्थान पर स्पेस डालें
-      let output = input.replace(emojiRegex, ' ');
-      // एक से अधिक स्पेस को एक स्पेस में समेट दें
-      output = output.replace(/\s+/g, ' ').trim();
+      // प्रत्येक लाइन को प्रोसेस करें ताकि newline संरचना बनी रहे
+      const lines = input.split('\n');
+      const processedLines = lines.map(line => line.replace(emojiRegex, ' '));
+      const output = processedLines.join('\n');
       document.getElementById('resultText').innerText = output;
+    }
+    
+    function copyResult() {
+      const resultText = document.getElementById('resultText').innerText;
+      navigator.clipboard.writeText(resultText).then(() => {
+        alert('Output copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
     }
   </script>
 </body>
