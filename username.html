@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emoji Remover & Font Normalizer</title>
+  <title>Emoji to Space & Font Normalizer</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -33,21 +33,23 @@
   </style>
 </head>
 <body>
-  <h1>Emoji Remover & Font Normalizer</h1>
-  <textarea id="inputText" placeholder="यहाँ अपना टेक्स्ट लिखें (इमोजी और स्पेशल फ़ॉन्ट सहित)..."></textarea><br>
-  <button onclick="removeEmojisAndNormalize()">Remove Emojis & Normalize</button>
+  <h1>Emoji to Space & Font Normalizer</h1>
+  <textarea id="inputText" placeholder="यहाँ अपना टेक्स्ट लिखें (इमोजी सहित)..."></textarea><br>
+  <button onclick="processText()">Process Text</button>
   <div class="result" id="resultText"></div>
 
   <script>
-    function removeEmojisAndNormalize() {
+    function processText() {
       const input = document.getElementById('inputText').value;
-      // यह regex कई इमोजी रेंज को कवर करता है। ध्यान दें कि इमोजी की पूरी रेंज को कवर करना चुनौतीपूर्ण है।
+      // यह regex कई इमोजी रेंज को कवर करता है। 
+      // यहाँ इमोजी को हटाने के बजाय उनके स्थान पर एक स्पेस डाला जा रहा है।
       const emojiRegex = /([\u2700-\u27BF]|[\u1F600-\u1F64F]|[\u1F300-\u1F5FF]|[\u1F680-\u1F6FF]|[\u1F1E0-\u1F1FF])/g;
-      // इमोजी को हटाएं
-      const withoutEmojis = input.replace(emojiRegex, '');
+      let output = input.replace(emojiRegex, ' ');
       // normalize('NFKC') से स्पेशल यूनिकोड फ़ॉन्ट्स को सामान्य टेक्स्ट में बदलें
-      const normalizedText = withoutEmojis.normalize('NFKC');
-      document.getElementById('resultText').innerText = normalizedText;
+      output = output.normalize('NFKC');
+      // यदि कई स्पेस आ जाएं तो उन्हें एक स्पेस में समेट दें
+      output = output.replace(/\s+/g, ' ');
+      document.getElementById('resultText').innerText = output;
     }
   </script>
 </body>
