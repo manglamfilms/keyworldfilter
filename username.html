@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emoji & Symbol to Space Converter</title>
+  <title>Text Formatter</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -34,23 +34,35 @@
   </style>
 </head>
 <body>
-  <h1>Emoji & Symbol to Space Converter</h1>
-  <textarea id="inputText" placeholder="यहाँ अपना टेक्स्ट लिखें (इमोजी, बिंदी, बुलेट, ब्लैक सर्कल सहित)..."></textarea><br>
-  <button onclick="convertEmojis()">Convert to Spaces</button>
+  <h1>Text Formatter</h1>
+  <textarea id="inputText" placeholder="अपना टेक्स्ट यहाँ लिखें..."></textarea><br>
+  <button onclick="cleanText()">Format Text</button>
   <button onclick="copyResult()">Copy Output</button>
   <div class="result" id="resultText"></div>
   
   <script>
-    function convertEmojis() {
-      const input = document.getElementById('inputText').value;
-      // इमोजी, "।" (बिंदी), "•" (बुलेट), और "●" (ब्लैक सर्कल) को स्पेस में बदलने के लिए regex
+    function cleanText() {
+      let input = document.getElementById('inputText').value;
+      
+      // इमोजी, "।", "•", "●" को स्पेस में बदलें
       const emojiRegex = /[\p{Extended_Pictographic}।•●]/gu;
-      const lines = input.split('\n');
-      const processedLines = lines.map(line => line.replace(emojiRegex, ' '));
-      const output = processedLines.join('\n');
-      document.getElementById('resultText').innerText = output;
+      input = input.replace(emojiRegex, ' ');
+
+      // डबल कोटेशन को सही करें ("" -> ")
+      input = input.replace(/"{2,}/g, '"');
+
+      // [ और ] को सुरक्षित रखें, बीच के कंटेंट को सही फॉर्मेट में रखें
+      input = input.replace(/\[\s*/g, '[').replace(/\s*\]/g, ']');
+
+      // ',' के चारों ओर सही स्पेस डालें
+      input = input.replace(/\s*,\s*/g, ', ');
+
+      // आउटपुट को डबल कोटेशन में डालें
+      input = `"${input}"`;
+
+      document.getElementById('resultText').innerText = input;
     }
-    
+
     function copyResult() {
       const resultText = document.getElementById('resultText').innerText;
       navigator.clipboard.writeText(resultText).then(() => {
