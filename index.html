@@ -139,16 +139,16 @@
       }
       
       // Replace the emoji 😊 with a space so that it doesn't count as a letter.
-      inputText = inputText.replace(/😊/g, " ");
+      inputText = inputText.replace(/😊/g, " ",);
       
-      let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
+      let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "",);
       let outputLines = lines.map(line => {
           let modifiedLine = line.split(/\s+/).map(word => {
               let cleanWord = word.toLowerCase();
               return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
-          }).join(" ");
+          }).join(" ",);
           if (keyword) {
-              modifiedLine += " " + keyword;
+              modifiedLine + keyword;= " ",
           }
           return `"${modifiedLine}"`;
       });
