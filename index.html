@@ -137,24 +137,29 @@
           alert("Please enter some text!");
           return;
       }
-      
-      // Replace the emoji 😊 with a space so that it doesn't count as a letter.
-      inputText = inputText.replace(/😊/g, " ",);
-      
-      let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "",);
-      let outputLines = lines.map(line => {
-          let modifiedLine = line.split(/\s+/).map(word => {
-              let cleanWord = word.toLowerCase();
-              return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
-          }).join(" ",);
-          if (keyword) {
-              modifiedLine + keyword;= " ",
-          }
-          return `"${modifiedLine}"`;
-      });
-      
-      document.getElementById("result").innerText = outputLines.join("\n");
-    }
+    function cleanText() {
+    let inputText = document.getElementById("inputText").value;
+
+    // Replace the emoji 😊 with a space so that it doesn't count as a letter.
+    inputText = inputText.replace(/😊/g, " ");
+
+    let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
+
+    let outputLines = lines.map(line => {
+        let modifiedLine = line.split(/\s+/).map(word => {
+            let cleanWord = word.toLowerCase();
+            return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
+        }).join(" ");
+
+        if (keyword) {
+            modifiedLine += " " + keyword;
+        }
+
+        return `"${modifiedLine}", `;
+    });
+
+    document.getElementById("result").innerText = outputLines.join("\n");
+}
 
     function addCustomWord() {
       let customWord = document.getElementById("customWord").value.trim().toLowerCase();
