@@ -1,223 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Modifier & Username Generator</title>
+  <title>Text Formatter</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background-color: #121212; color: white; text-align: center; }
-    .container { width: 90%; max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; background-color: #222; box-shadow: 0 0 10px rgba(255,255,255,0.1); margin-bottom: 20px; }
-    textarea, input, button { width: 90%; padding: 10px; margin: 10px 0; background-color: #333; color: white; border: 1px solid #555; border-radius: 5px; }
-    button { cursor: pointer; background-color: #ff5722; border: none; padding: 10px; font-weight: bold; }
-    .copy-btn { background-color: #008CBA; }
-    h2 { margin-top: 0; }
-    .output-box { margin-top: 10px; padding: 10px; border-radius: 5px; background-color: #333; word-wrap: break-word; white-space: pre-wrap; text-align: left; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      min-height: 50px;
+      white-space: pre-wrap;
+    }
   </style>
 </head>
 <body>
-
-  <!-- Smart Word Modifier -->
-  <div class="container">
-    <h2>Smart Word Modifier</h2>
-    <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
-
-    <h3>Add Custom Word Modification</h3>
-    <input type="text" id="customWord" placeholder="Enter word to modify (e.g., apple)">
-    <input type="text" id="customReplacement" placeholder="Enter replacement (e.g., aaple)">
-    <button onclick="addCustomWord()">Add Word</button>
-
-    <h3>Add Keyword in Output</h3>
-    <input type="text" id="outputKeyword" placeholder="Enter keyword to add in output (e.g., #Modified)">
-
-    <button onclick="modifySentences()">Modify Text</button>
-    <button class="copy-btn" onclick="copyText('result')">Copy</button>
-    <h3>Modified Output:</h3>
-    <div id="result" class="output-box"></div>
-  </div>
-
-  <!-- Custom Username Generator -->
-  <div class="container">
-    <h2>Custom Username Generator</h2>
-    <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
-    <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
-
-    <h3>Add Keyword in Output</h3>
-    <input type="text" id="usernameKeyword" placeholder="Enter keyword to add in output (e.g., #Username)">
-
-    <button onclick="generateUsername()">Generate</button>
-    <button class="copy-btn" onclick="copyText('output')">Copy</button>
-    <h3>Generated Usernames:</h3>
-    <div id="output" class="output-box"></div>
-  </div>
-
+  <h1>Text Formatter</h1>
+  <textarea id="inputText" placeholder="अपना टेक्स्ट यहाँ लिखें..."></textarea><br>
+  <button onclick="cleanText()">Format Text</button>
+  <button onclick="copyResult()">Copy Output</button>
+  <div class="result" id="resultText"></div>
+  
   <script>
-    let wordModifications = {
-         "desi": "desii", "deshi": "deshii", "pornhub":"pornhab", "hot": "hoot", "sexy": "seexy",  "adults": "adalt",  
-         "aunty": "auntee", "bhabhi": "bhabhii", "romance": "romaance", "love": "loove",
-         "xxx": "xxxt", "nude": "nudee", "hentai": "hentaaai", "vairal": "viral",
-         "milf": "milff", "bdsm": "bdsmm", "gay": "gaay", "lesbian": "lesbiann",
-         "fetish": "fetissh", "pussy": "pussyy", "dick": "dicck", "cock": "cocck",
-         "anal": "anaal", "cum": "cuum", "blowjob": "bloowjob", "orgy": "orgyy",
-         "deepthroat": "deepthroatt", "video": "vidio", "top": "topp", "web": "weeb",
-         "jonysins": "jony_sins", "mia": "miyaa", "miya": "miiya", "khalifa": "khalifaa",
-
-         "desi": "desii","pornhub":"pornhab", "hot": "hoot", "sexy": "seexy", "mature": "maturee",
-         "aunty": "auntee", "romance": "romaance", "love": "loove", "affair": "affaair",
-         "dating": "daating", "night": "niight", "kiss": "kiiss", "nude": "nuude",
-         "erotic": "erootic", "adult": "adults", "bold": "boold", "passion": "passioon",
-         "lust": "luust", "intimate": "intimaate", "flirt": "fliirt", "bedroom": "bedrooom",
-         "sensual": "sensuall", "playboy": "playbooy", "telegram": "teelegram", "premium": "preemium", "naked": "nakd", "horny": "horni",
-         "onlyfans": "onlyfaans", "mod": "mood", "hacked": "haacked", "cracked": "craacked",
-         "casino": "casinno", "betting": "bettiing", "porn": "porrn", "xxx": "xxX",
-         "free fire": "free fiire", "hacker": "haacker", "cheat": "cheeat", "dark web": "daark web", "porno": "prono",
-         "bitcoin": "bitcoiin", "drug": "druug", "scam": "scaam", "deepfake": "deepfaake",
-         "illegal": "illegaal", "fake id": "faake ID", "hijack": "hijaack", "spyware": "spywaare",
-         "fraud": "frauud", "carding": "cardiing", "phishing": "phishiing", "hacking": "haacking",
-         "cybercrime": "cybercriime", "extortion": "extortiion", "blackmail": "blaackmail",
-         "bomb": "boomb", "weapon": "weaponn", "terrorist": "terrorriist", "explosive": "explosiive",
-         "mirzapur": "mirzapuur","sacred games": "sacreed games","leaked": "leakedd","lingerie": "lingeri","japanese": "japani","girls": "ladki girl",
-         "family man": "famiy man","ass": "asas","amateur": "amateurs","fucking": "fucka","fuck": "fuckingg","call": "coll","xnxx": "xnx","amazon prime": "amazon prime",
-         "patal lok": "pataal lok","sex": "sexi","sexx": "saxi",
-         "asur": "asurr",
-         "scam 1992": "scaam 1992",
-         "game of thrones": "game of thrones",
-         "money heist": "money heeist",
-         "breaking bad": "breaking baad",
-         "stranger things": "stranger thingz",
-         "lucifer": "luciifer",
-         "squid game": "squid gaame",
-         "avengers": "avengerrs",
-         "joker": "jooker",
-         "titanic": "titannic",
-         "inception": "inceptioon",
-         "fast and furious": "fast and furius",
-         "deadpool": "deadpoool",
-         "the boys": "the boiys",
-         "the witcher": "the witcheer",
-         "peaky blinders": "peaky blinderrs",
-
-         "seks": "seeks",
-         "porno": "porrno",
-         "mesum": "mesuum",
-         "telanjang": "telanjaang",
-         "bugil": "bugiil",
-         "janda panas": "jandaa panaas",
-         "bokep": "bokeep",
-         "VCS": "V C S",
-         "ngentot": "ngenttot",
-         "esek-esek": "esek-esekk",
-         "boobs": "boobss",
-         "teen": "teenn",
-         "tits": "titss",
-         "porn": "porrn",
-        
-         "xxx": "xxxt",
-         "nude": "nudee",
-         "hentai": "hentaaai",
-         "milf": "milff",
-         "bdsm": "bdsmm",
-         "gay": "gaay",
-         "lesbian": "lesbiann",
-         "hardcore": "hardcoore",
-         "fetish": "fetissh",
-         "pussy": "pussyy",
-         "dick": "dicck",
-         "cock": "cocck",
-         "anal": "anaal",
-         "cum": "cuum",
-         "blowjob": "bloowjob",
-         "orgy": "orgyy",
-         "deepthroat": "deepthroatt"
-    };
-
-    function modifySentences() {
-      let inputText = document.getElementById("wordList").value.trim();
-      let keyword = document.getElementById("outputKeyword").value.trim();
-      if (!inputText) {
-          alert("Please enter some text!");
-          return;
-      }
+    function cleanText() {
+      let input = document.getElementById('inputText').value;
       
-      // Replace the emoji 😊 with a space so that it doesn't count as a letter.
-      inputText = inputText.replace(/😊/g, " ");
-      
-      let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
-      let outputLines = lines.map(line => {
-          let modifiedLine = line.split(/\s+/).map(word => {
-              let cleanWord = word.toLowerCase();
-              return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
-          }).join(" ");
-          if (keyword) {
-              modifiedLine += " " + keyword;
-          }
-          return `"${modifiedLine}"`;
-      });
-      
-      document.getElementById("result").innerText = outputLines.join("\n");
+      // इमोजी, "।", "•", "●" को स्पेस में बदलें
+      const emojiRegex = /[\p{Extended_Pictographic}।•●]/gu;
+      input = input.replace(emojiRegex, ' ');
+
+      // डबल कोटेशन को सही करें ("" -> ")
+      input = input.replace(/"{2,}/g, '"');
+
+      // [ और ] को सुरक्षित रखें, बीच के कंटेंट को सही फॉर्मेट में रखें
+      input = input.replace(/\[\s*/g, '[').replace(/\s*\]/g, ']');
+
+      // ',' के चारों ओर सही स्पेस डालें
+      input = input.replace(/\s*,\s*/g, ', ');
+
+      // आउटपुट को डबल कोटेशन में डालें
+      input = `"${input}"`;
+
+      document.getElementById('resultText').innerText = input;
     }
 
-    function addCustomWord() {
-      let customWord = document.getElementById("customWord").value.trim().toLowerCase();
-      let customReplacement = document.getElementById("customReplacement").value.trim();
-
-      if (!customWord || !customReplacement) {
-          alert("Please enter both a word and its replacement.");
-          return;
-      }
-
-      wordModifications[customWord] = customReplacement;
-      alert(`Added: ${customWord} → ${customReplacement}`);
-    }
-
-    function generateUsername() {
-      let input = document.getElementById("usernameInput").value;
-      let suffix = document.getElementById("suffixInput").value.trim();
-      let keyword = document.getElementById("usernameKeyword").value.trim();
-      
-      // Replace emoji 😊 with a space for consistency.
-      input = input.replace(/😊/g, " ");
-      
-      let lines = input.split(/\n/).filter(line => line.trim() !== "");
-      
-      let uniqueUsernames = new Set();
-
-      lines.forEach(line => {
-        line = line.replace(/t\.me\//gi, "").replace(/[^a-zA-Z0-9_]/g, " ").trim();
-        let words = line.split(/\s+/);
-
-        words = words.map(word => {
-            let cleanWord = word.toLowerCase();
-            return wordModifications[cleanWord] ? wordModifications[cleanWord] : word;
-        });
-
-        let joined = words.join("_").replace(/_+/g, "_").replace(/^_+|_+$/g, "");
-        let maxLength = 23 - suffix.length;
-        let trimmed = joined.substring(0, maxLength);
-        let username = trimmed + suffix;
-
-        if (keyword) {
-            username += " " + keyword;
-        }
-
-        uniqueUsernames.add(`"${username}"`);
-      });
-
-      document.getElementById("output").innerText = Array.from(uniqueUsernames).join(",\n");
-    }
-
-    function copyText(elementId) {
-      let text = document.getElementById(elementId).innerText;
-      if (!text) {
-          alert("Nothing to copy!");
-          return;
-      }
-      navigator.clipboard.writeText(text).then(() => {
-          alert("Copied to clipboard!");
+    function copyResult() {
+      const resultText = document.getElementById('resultText').innerText;
+      navigator.clipboard.writeText(resultText).then(() => {
+        alert('Output copied to clipboard!');
       }).catch(err => {
-          console.error("Failed to copy: ", err);
+        console.error('Failed to copy text: ', err);
       });
     }
   </script>
-   <button class="btn" onclick="window.location.href='username.html'">Click Me</button>
 </body>
 </html>
