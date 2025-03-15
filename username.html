@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emoji to Space Converter</title>
+  <title>Emoji & Symbol to Space Converter</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -34,18 +34,17 @@
   </style>
 </head>
 <body>
-  <h1>Emoji to Space Converter</h1>
-  <textarea id="inputText" placeholder="यहाँ अपना टेक्स्ट लिखें (इमोजी सहित)..."></textarea><br>
-  <button onclick="convertEmojis()">Convert Emojis to Spaces</button>
+  <h1>Emoji & Symbol to Space Converter</h1>
+  <textarea id="inputText" placeholder="यहाँ अपना टेक्स्ट लिखें (इमोजी, बिंदी, बुलेट सहित)..."></textarea><br>
+  <button onclick="convertEmojis()">Convert to Spaces</button>
   <button onclick="copyResult()">Copy Output</button>
   <div class="result" id="resultText"></div>
   
   <script>
     function convertEmojis() {
       const input = document.getElementById('inputText').value;
-      // Unicode Extended_Pictographic प्रॉपर्टी का उपयोग करते हुए अधिकांश इमोजी को मैच करता है
-      const emojiRegex = /\p{Extended_Pictographic}/gu;
-      // प्रत्येक लाइन को प्रोसेस करें ताकि newline संरचना बनी रहे
+      // इमोजी, "।" (बिंदी) और "•" (बुलेट) को स्पेस में बदलने के लिए regex
+      const emojiRegex = /[\p{Extended_Pictographic}।•]/gu;
       const lines = input.split('\n');
       const processedLines = lines.map(line => line.replace(emojiRegex, ' '));
       const output = processedLines.join('\n');
