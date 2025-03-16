@@ -16,6 +16,7 @@
       margin-bottom: 10px;
       padding: 10px;
       font-size: 16px;
+      white-space: pre-wrap;
     }
     button {
       padding: 10px 15px;
@@ -44,13 +45,15 @@
     function cleanText() {
       let input = document.getElementById('inputText').value;
 
-      // केवल अल्फ़ाबेट और नंबर्स रखें, बाकी सबको स्पेस में बदलें
-      input = input.replace(/[^a-zA-Z0-9\s]/g, ' ');
+      // हर लाइन में सिर्फ़ अल्फ़ाबेट और नंबर रखें, बाकी स्पेशल कैरेक्टर को स्पेस से बदलें
+      let lines = input.split("\n").map(line => 
+        line.replace(/[^a-zA-Z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim()
+      );
 
-      // एक से ज्यादा स्पेस को एक स्पेस में बदलें
-      input = input.replace(/\s+/g, ' ').trim();
+      // फॉर्मेटेड टेक्स्ट को वापस जोड़ें (लाइन ब्रेक्स को बरकरार रखें)
+      let formattedText = lines.join("\n");
 
-      document.getElementById('resultText').innerText = input;
+      document.getElementById('resultText').innerText = formattedText;
     }
 
     function copyResult() {
