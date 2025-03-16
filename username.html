@@ -44,17 +44,13 @@
     function cleanText() {
       let input = document.getElementById('inputText').value;
 
-      // अनावश्यक चिह्न हटाएं लेकिन शब्दों के बीच स्पेस रखें
-      const emojiRegex = /[\p{Extended_Pictographic}।•●💋♥🍓🔞]/gu;
-      input = input.replace(emojiRegex, '');  // इमोजी हटाएँ, लेकिन स्पेस न हटाएँ
+      // केवल अल्फ़ाबेट और नंबर्स रखें, बाकी सबको स्पेस में बदलें
+      input = input.replace(/[^a-zA-Z0-9\s]/g, ' ');
 
       // एक से ज्यादा स्पेस को एक स्पेस में बदलें
       input = input.replace(/\s+/g, ' ').trim();
 
-      // हर लाइन को डबल कोटेशन में रखें और ',' से जोड़ें
-      let lines = input.split("\n").map(line => `"${line.trim()}"`).join(",\n\n");
-
-      document.getElementById('resultText').innerText = lines;
+      document.getElementById('resultText').innerText = input;
     }
 
     function copyResult() {
