@@ -81,11 +81,18 @@
         <div id="result" class="output-box"></div>
     </div>
 
-    <!-- Extra Button (जो तुमने दिया था) -->
-    <div class="container">
-        <h2>Need More Features?</h2>
-        <button onclick="alert('अब पूरा सिस्टम रेडी है! अगर कुछ और चाहिए तो बताइए!')">अब पूरा सिस्टम रेडी है!</button>
-    </div>
+  <!-- Extra Button (जो तुमने दिया था) -->
+<div class="container">
+    <h2>Need More Features?</h2>
+    <button onclick="openUsername()">अब पूरा सिस्टम रेडी है!</button>
+</div>
+
+<script>
+    function openUsername() {
+        window.location.href = "username.html"; // इसी folder में होनी चाहिए username.html फाइल
+    }
+</script>
+
 
     <script>
         let wordModifications = {
