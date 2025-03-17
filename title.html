@@ -48,6 +48,7 @@
             width: 80%;
             margin: 0 auto;
             white-space: pre-wrap;
+            font-weight: bold;
         }
     </style>
     <script>
@@ -82,11 +83,10 @@
                     line += " " + extraWords;
                 }
 
-                return `"${line}"`;
+                return `"${line}",`; // ✅ हर लाइन के बाद , जोड़ा गया
             });
 
-            // Format output with commas and double quotes
-            document.getElementById("result").innerText = outputLines.join(",\n");
+            document.getElementById("result").innerText = outputLines.join("\n");
         }
 
         function copyToClipboard() {
