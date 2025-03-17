@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Username Generator</title>
+    <script>
+        let wordFilters = {};
+
+        async function loadFilters() {
+            const response = await fetch("filters.json");
+            wordFilters = await response.json();
+        }
+
+        function generateUsername() {
+            let inputText = document.getElementById("usernameInput").value.trim();
+            let suffix = document.getElementById("suffixInput").value.trim();
+
+            if (!inputText) {
+                alert("Please enter some text!");
+                return;
+            }
+
+            let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
+            let outputLines = lines.map(line => {
+                for (let key in wordFilters) {
+                    let regex = new RegExp(`\\b${key}\\b`, "gi");
+                    line = line.replace(regex, wordFilters[key]);
+                }
+                return line + suffix;
+            });
+
+            document.getElementById("output").innerText = outputLines.join("\n");
+        }
+
+        window.onload = loadFilters;
+    </script>
+</head>
+<body>
+    <h2>Custom Username Generator</h2>
+    <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
+    <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
+    <button onclick="generateUsername()">Generate</button>
+    <h3>Generated Usernames:</h3>
+    <div id="output"></div>
+</body>
+</html>
