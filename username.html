@@ -3,7 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Username Generator</title>
+    <title>🚀 Custom Username Generator - Premium</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4a90e2, #145a9e);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+        textarea, input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        textarea {
+            height: 120px;
+        }
+        button {
+            background: #ffcc00;
+            color: #333;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #ffdd44;
+        }
+        #output {
+            background: #ffffff;
+            color: black;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            width: 80%;
+            margin: 10px auto;
+            white-space: pre-wrap;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
     <script>
         let wordFilters = {};
 
@@ -35,13 +89,9 @@
                 // Trim main input to max 25 characters
                 line = line.substring(0, 25);
 
-                // Replace spaces with underscores (_)
-                line = line.replace(/\s+/g, "_");
-
                 // Add extra words (without character limit)
                 if (extraWords) {
-                    extraWords = extraWords.replace(/\s+/g, "_");
-                    line += "_" + extraWords;
+                    line += " " + extraWords;
                 }
 
                 // Add suffix
@@ -53,15 +103,24 @@
             document.getElementById("output").innerText = outputLines.join("\n");
         }
 
+        function copyToClipboard() {
+            let resultText = document.getElementById("output").innerText;
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert("Copied to clipboard! ✅");
+            });
+        }
+
         window.onload = loadFilters;
     </script>
 </head>
 <body>
-    <h2>Custom Username Generator</h2>
+    <h2>🚀 Custom Username Generator - Premium</h2>
     <textarea id="usernameInput" rows="6" placeholder="Enter text here..."></textarea>
     <input type="text" id="suffixInput" placeholder="Enter suffix (e.g., _s8g)" value="_s8g">
     <input type="text" id="extraWords" placeholder="Enter extra words (space-separated)">
+    <br>
     <button onclick="generateUsername()">Generate</button>
+    <button onclick="copyToClipboard()">📋 Copy Output</button>
     <h3>Generated Usernames:</h3>
     <pre id="output"></pre>
 </body>
