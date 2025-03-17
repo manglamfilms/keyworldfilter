@@ -3,7 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Word Modifier</title>
+    <title>Smart Word Modifier - Premium</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4a90e2, #145a9e);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            font-size: 24px;
+        }
+        textarea, input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+        textarea {
+            height: 120px;
+        }
+        button {
+            background: #ffcc00;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #ffdd44;
+        }
+        #result {
+            background: #ffffff;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            width: 80%;
+            margin: 0 auto;
+            white-space: pre-wrap;
+        }
+    </style>
     <script>
         let wordFilters = {};
 
@@ -43,14 +89,23 @@
             document.getElementById("result").innerText = outputLines.join(",\n");
         }
 
+        function copyToClipboard() {
+            let resultText = document.getElementById("result").innerText;
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert("Copied to clipboard!");
+            });
+        }
+
         window.onload = loadFilters;
     </script>
 </head>
 <body>
-    <h2>Smart Word Modifier</h2>
+    <h2>🔹 Smart Word Modifier - Premium 🔹</h2>
     <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
     <input type="text" id="extraWords" placeholder="Enter extra words (space-separated)">
+    <br>
     <button onclick="modifySentences()">Modify</button>
+    <button onclick="copyToClipboard()">Copy Output</button>
     <h3>Modified Output:</h3>
     <pre id="result"></pre>
 </body>
