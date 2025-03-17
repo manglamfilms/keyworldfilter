@@ -7,6 +7,7 @@
     <script>
         let wordFilters = {};
 
+        // Load filters.json
         async function loadFilters() {
             const response = await fetch("filters.json");
             wordFilters = await response.json();
@@ -14,6 +15,7 @@
 
         function modifySentences() {
             let inputText = document.getElementById("wordList").value.trim();
+            let extraWords = document.getElementById("extraWords").value.trim();
 
             if (!inputText) {
                 alert("Please enter some text!");
@@ -21,15 +23,24 @@
             }
 
             let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
+
             let outputLines = lines.map(line => {
+                // Apply word filters
                 for (let key in wordFilters) {
                     let regex = new RegExp(`\\b${key}\\b`, "gi");
                     line = line.replace(regex, wordFilters[key]);
                 }
-                return line;
+
+                // Add extra words (if provided)
+                if (extraWords) {
+                    line += " " + extraWords;
+                }
+
+                return `"${line}"`;
             });
 
-            document.getElementById("result").innerText = outputLines.join("\n");
+            // Format output with commas and double quotes
+            document.getElementById("result").innerText = outputLines.join(",\n");
         }
 
         window.onload = loadFilters;
@@ -38,8 +49,9 @@
 <body>
     <h2>Smart Word Modifier</h2>
     <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
+    <input type="text" id="extraWords" placeholder="Enter extra words (space-separated)">
     <button onclick="modifySentences()">Modify</button>
     <h3>Modified Output:</h3>
-    <div id="result"></div>
+    <pre id="result"></pre>
 </body>
 </html>
