@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Word Modifier</title>
+    <script>
+        let wordFilters = {};
+
+        async function loadFilters() {
+            const response = await fetch("filters.json");
+            wordFilters = await response.json();
+        }
+
+        function modifySentences() {
+            let inputText = document.getElementById("wordList").value.trim();
+
+            if (!inputText) {
+                alert("Please enter some text!");
+                return;
+            }
+
+            let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
+            let outputLines = lines.map(line => {
+                for (let key in wordFilters) {
+                    let regex = new RegExp(`\\b${key}\\b`, "gi");
+                    line = line.replace(regex, wordFilters[key]);
+                }
+                return line;
+            });
+
+            document.getElementById("result").innerText = outputLines.join("\n");
+        }
+
+        window.onload = loadFilters;
+    </script>
+</head>
+<body>
+    <h2>Smart Word Modifier</h2>
+    <textarea id="wordList" rows="6" placeholder="Enter text here..."></textarea>
+    <button onclick="modifySentences()">Modify</button>
+    <h3>Modified Output:</h3>
+    <div id="result"></div>
+</body>
+</html>
