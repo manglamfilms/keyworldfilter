@@ -7,7 +7,7 @@
     <script>
         let wordFilters = {};
 
-        // Load filter.json
+        // Load filters.json
         async function loadFilters() {
             const response = await fetch("filters.json");
             wordFilters = await response.json();
@@ -26,8 +26,8 @@
             let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
 
             let outputLines = lines.map(line => {
-                // Replace spaces with dashes
-                line = line.replace(/\s+/g, "-");
+                // Replace spaces with underscores (_)
+                line = line.replace(/\s+/g, "_");
 
                 // Filter words using filters.json
                 for (let key in wordFilters) {
@@ -35,16 +35,16 @@
                     line = line.replace(regex, wordFilters[key]);
                 }
 
-                // Add extra words if given
+                // Trim main input to max 25 characters
+                line = line.substring(0, 25);
+
+                // Add extra words (without character limit)
                 if (extraWords) {
-                    line += "-" + extraWords.replace(/\s+/g, "-");
+                    line += "_" + extraWords.replace(/\s+/g, "_");
                 }
 
                 // Add suffix
                 line += suffix;
-
-                // Trim to max 25 characters
-                line = line.substring(0, 25);
 
                 return `"${line}"`;
             });
