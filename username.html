@@ -26,9 +26,6 @@
             let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== "");
 
             let outputLines = lines.map(line => {
-                // Replace spaces with underscores (_)
-                line = line.replace(/\s+/g, "_");
-
                 // Filter words using filters.json
                 for (let key in wordFilters) {
                     let regex = new RegExp(`\\b${key}\\b`, "gi");
@@ -38,9 +35,13 @@
                 // Trim main input to max 25 characters
                 line = line.substring(0, 25);
 
+                // Replace spaces with underscores (_)
+                line = line.replace(/\s+/g, "_");
+
                 // Add extra words (without character limit)
                 if (extraWords) {
-                    line += "_" + extraWords.replace(/\s+/g, "_");
+                    extraWords = extraWords.replace(/\s+/g, "_");
+                    line += "_" + extraWords;
                 }
 
                 // Add suffix
