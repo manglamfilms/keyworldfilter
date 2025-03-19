@@ -61,7 +61,7 @@
     <script>
         let wordFilters = {};
 
-        // Load filters.json
+        // ✅ filters.json को लोड करें
         async function loadFilters() {
             const response = await fetch("filters.json");
             wordFilters = await response.json();
@@ -73,38 +73,43 @@
             let extraWords = document.getElementById("extraWords").value.trim();
 
             if (!inputText) {
-                alert("Please enter some text!");
+                alert("कृपया टेक्स्ट डालें!");
                 return;
             }
 
-            let lines = inputText.split(/\n/).map(line => line.trim()).filter(line => line !== );
+            // ✅ इनपुट को लाइनों में तोड़ना (कोमा और डबल कोट्स सहित)
+            let lines = inputText.split("\n").map(line => line.trim()).filter(line => line !== "");
 
             let outputLines = lines.map(line => {
-                // Filter words using filters.json
+                // ✅ डबल कोट्स को सुरक्षित रखते हुए लाइन को प्रोसेस करें
+                let cleanLine = line.replace(/^"|"$/g, "");  // पहले और आखिरी कोट्स हटाना
+
+                // ✅ फ़िल्टर लागू करें
                 for (let key in wordFilters) {
                     let regex = new RegExp(`\\b${key}\\b`, "gi");
-                    line = line.replace(regex, wordFilters[key]);
+                    cleanLine = cleanLine.replace(regex, wordFilters[key]);
                 }
 
-                // Trim main input to max 25 characters
-                line = line.substring(0, 25);
+                // ✅ 25 अक्षरों की सीमा
+                cleanLine = cleanLine.substring(0, 25);
 
-                // Replace spaces with underscores (_)
-                line = line.replace(/\s+/g, "_");
+                // ✅ स्पेस को अंडरस्कोर में बदलें
+                cleanLine = cleanLine.replace(/\s+/g, "_");
 
-                // Add extra words (without character limit)
+                // ✅ एक्स्ट्रा शब्द जोड़ें
                 if (extraWords) {
                     extraWords = extraWords.replace(/\s+/g, "_");
-                    line += "_" + extraWords;
+                    cleanLine += "_" + extraWords;
                 }
 
-                // Add suffix
-                line += suffix;
+                // ✅ सफिक्स जोड़ें
+                cleanLine += suffix;
 
-                return `"${line}",`;
+                // ✅ डबल कोट्स में वापस लपेटें
+                return `"${cleanLine}"`;
             });
 
-            document.getElementById("output").innerText = outputLines.join("\n");
+            document.getElementById("output").innerText = outputLines.join(",\n");
         }
 
         function copyToClipboard() {
