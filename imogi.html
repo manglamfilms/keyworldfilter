@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Formatter</title>
+  <title>Clean Text Formatter</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -35,33 +35,50 @@
   </style>
 </head>
 <body>
-  <h1>Text Formatter</h1>
-  <textarea id="inputText" placeholder="যেকোনো ভাষায় লিখুন..."></textarea><br>
+  <h1>বাংলা Clean Text Formatter</h1>
+  <textarea id="inputText" placeholder="এখানে যেকোনো লেখা দিন..."></textarea><br>
   <button onclick="cleanText()">Format Text</button>
   <button onclick="copyResult()">Copy Output</button>
   <div class="result" id="resultText"></div>
 
   <script>
+    // Blocked words list
+    const blockedWords = [
+      "সেক্স", "পর্ণ", "xxx", "xnxx", "পায়ুপথ", "পর্ন", "পর্নস্টার", 
+      "হেনটাই", "sex", "anal", "hentai", "mia", "khalifa", "লর্ডস", 
+      "traci", "lords", "শেমানটিউব", "bongacams", "shemale", "boobs"
+    ];
+
+    // Emoji remover function
     function removeEmojis(text) {
-      // इमोजी हटाने के लिए एक भरोसेमंद Unicode Range
-      return text.replace(/[\u{1F600}-\u{1F64F}]/gu, '')  // Emoticons
-                 .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')  // Misc Symbols and Pictographs
-                 .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')  // Transport & Map
-                 .replace(/[\u{2600}-\u{26FF}]/gu, '')    // Misc symbols
-                 .replace(/[\u{2700}-\u{27BF}]/gu, '')    // Dingbats
-                 .replace(/[\u{1F900}-\u{1F9FF}]/gu, '')  // Supplemental Symbols and Pictographs
-                 .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '')  // Symbols and Pictographs Extended-A
-                 .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, ''); // Flags
+      return text.replace(/[\u{1F600}-\u{1F64F}]/gu, '')
+                 .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')
+                 .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')
+                 .replace(/[\u{2600}-\u{26FF}]/gu, '')
+                 .replace(/[\u{2700}-\u{27BF}]/gu, '')
+                 .replace(/[\u{1F900}-\u{1F9FF}]/gu, '')
+                 .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '')
+                 .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '');
+    }
+
+    // Block bad words
+    function filterBadWords(text) {
+      let clean = text;
+      blockedWords.forEach(word => {
+        const regex = new RegExp(word, 'gi');
+        clean = clean.replace(regex, '***');
+      });
+      return clean;
     }
 
     function cleanText() {
       let input = document.getElementById('inputText').value;
 
+      // Break into lines, clean each
       let lines = input.split("\n").map(line =>
-        removeEmojis(line)
-          .replace(/[^\p{L}\p{N}\p{P}\p{Zs}]/gu, ' ') // केवल अक्षर, अंक, विराम चिह्न और स्पेस रखें
-          .replace(/\s+/g, ' ') // एक से ज़्यादा स्पेस को एक करें
-          .trim()
+        filterBadWords(
+          removeEmojis(line)
+        ).replace(/\s+/g, ' ').trim()
       );
 
       let formattedText = lines.join("\n");
