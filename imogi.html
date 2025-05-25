@@ -36,23 +36,31 @@
 </head>
 <body>
   <h1>Text Formatter</h1>
-  <textarea id="inputText" placeholder="अपना टेक्स्ट यहाँ लिखें..."></textarea><br>
+  <textarea id="inputText" placeholder="যেকোনো ভাষায় লিখুন..."></textarea><br>
   <button onclick="cleanText()">Format Text</button>
   <button onclick="copyResult()">Copy Output</button>
   <div class="result" id="resultText"></div>
 
   <script>
+    function removeEmojis(text) {
+      // इमोजी हटाने के लिए एक भरोसेमंद Unicode Range
+      return text.replace(/[\u{1F600}-\u{1F64F}]/gu, '')  // Emoticons
+                 .replace(/[\u{1F300}-\u{1F5FF}]/gu, '')  // Misc Symbols and Pictographs
+                 .replace(/[\u{1F680}-\u{1F6FF}]/gu, '')  // Transport & Map
+                 .replace(/[\u{2600}-\u{26FF}]/gu, '')    // Misc symbols
+                 .replace(/[\u{2700}-\u{27BF}]/gu, '')    // Dingbats
+                 .replace(/[\u{1F900}-\u{1F9FF}]/gu, '')  // Supplemental Symbols and Pictographs
+                 .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '')  // Symbols and Pictographs Extended-A
+                 .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, ''); // Flags
+    }
+
     function cleanText() {
       let input = document.getElementById('inputText').value;
 
       let lines = input.split("\n").map(line =>
-        line
-          // इमोजी और पिक्टोग्राम हटाएं
-          .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
-          // बाकी गैर-अक्षर चिन्हों को स्पेस से बदलें, लेकिन यूनिकोड अक्षर, अंक, विराम चिन्ह, स्पेस सुरक्षित रखें
-          .replace(/[^\p{L}\p{N}\p{P}\p{Zs}]/gu, ' ')
-          // एक से अधिक स्पेस को एक में बदलें
-          .replace(/\s+/g, ' ')
+        removeEmojis(line)
+          .replace(/[^\p{L}\p{N}\p{P}\p{Zs}]/gu, ' ') // केवल अक्षर, अंक, विराम चिह्न और स्पेस रखें
+          .replace(/\s+/g, ' ') // एक से ज़्यादा स्पेस को एक करें
           .trim()
       );
 
