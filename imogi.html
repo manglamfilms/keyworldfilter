@@ -40,19 +40,23 @@
   <button onclick="cleanText()">Format Text</button>
   <button onclick="copyResult()">Copy Output</button>
   <div class="result" id="resultText"></div>
-  
+
   <script>
     function cleanText() {
       let input = document.getElementById('inputText').value;
 
-      // हर लाइन में सिर्फ़ अल्फ़ाबेट और नंबर रखें, बाकी स्पेशल कैरेक्टर को स्पेस से बदलें
-      let lines = input.split("\n").map(line => 
-        line.replace(/[^a-zA-Z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim()
+      let lines = input.split("\n").map(line =>
+        line
+          // इमोजी और पिक्टोग्राम हटाएं
+          .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
+          // बाकी गैर-अक्षर चिन्हों को स्पेस से बदलें, लेकिन यूनिकोड अक्षर, अंक, विराम चिन्ह, स्पेस सुरक्षित रखें
+          .replace(/[^\p{L}\p{N}\p{P}\p{Zs}]/gu, ' ')
+          // एक से अधिक स्पेस को एक में बदलें
+          .replace(/\s+/g, ' ')
+          .trim()
       );
 
-      // फॉर्मेटेड टेक्स्ट को वापस जोड़ें (लाइन ब्रेक्स को बरकरार रखें)
       let formattedText = lines.join("\n");
-
       document.getElementById('resultText').innerText = formattedText;
     }
 
